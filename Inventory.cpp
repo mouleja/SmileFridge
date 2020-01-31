@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 
+
 #include "Inventory.hpp"
 
 void Inventory::GetItemsFromCsv(string filename)
@@ -49,6 +50,16 @@ void Inventory::GetItemsFromCsv(string filename)
 	}
 
 	inFile.close();
+}
+
+vector<Item*> Inventory::GetFavorites() {
+	vector<Item*> favorites;
+	for (Item* item : _contents) {
+		if (item->IsFavorite()) {
+			favorites.push_back(item);
+		}
+	}
+	return favorites;
 }
 
 /* Item Properties

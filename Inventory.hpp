@@ -17,5 +17,6 @@ public:
         GetItemsFromCsv("itemslist.csv");
     }
     vector<Item*> GetContents() { return _contents; }
+	vector<Item*> GetFavorites();
 
 };

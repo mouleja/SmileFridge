@@ -32,8 +32,10 @@ int main()
     User *user = new User("Joe Blow", "joe@blow.com", "AFE87WE34FES");
     Inventory *inventory = new Inventory();
     vector<Item*> contents = inventory->GetContents();
+	vector<Item*> favorites = inventory->GetFavorites();
 
     cout << "Printing fridge contents:" << endl << endl;
+
     for (Item* item : contents)
     {
         cout << item->GetDisplayName() << " " << item->GetFullName() << " " << item->GetSku() << " ";
@@ -41,6 +43,14 @@ int main()
         if (item->IsFavorite()) cout << "Favorite";
         cout << endl;
     }
+
+	cout << endl << "Printing fridge favorites:" << endl << endl;
+
+	for (Item* item : favorites)
+	{
+		cout << item->GetDisplayName() << " " << item->GetFullName() << " " << item->GetSku() << " ";
+		cout << item->GetDate() << item->GetQuantity() << " " << item->GetOrderPoint() << endl;
+	}
 
     return 0;
 } //End Main
