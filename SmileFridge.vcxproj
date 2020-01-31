@@ -20,9 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FridgeTestMain.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Item.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Inventory.hpp" />
+    <ClInclude Include="Item.hpp" />
     <ClInclude Include="User.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="itemslist.csv" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
