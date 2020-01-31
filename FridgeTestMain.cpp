@@ -38,9 +38,9 @@ int main()
 
     for (Item* item : contents)
     {
-        cout << item->GetDisplayName() << " " << item->GetFullName() << " " << item->GetSku() << " ";
-        cout << item->GetDate() << item->GetQuantity() << " " << item->GetOrderPoint() << " ";
-        if (item->IsFavorite()) cout << "Favorite";
+        cout << item->GetDisplayName() << "| " << item->GetFullName() << "| " << item->GetSku() << "| ";
+        cout << item->GetDate() << "| " << item->GetQuantity() << "| " << item->GetOrderPoint();
+        if (item->IsFavorite()) cout << "| Favorite";
         cout << endl;
     }
 
@@ -48,8 +48,8 @@ int main()
 
 	for (Item* item : favorites)
 	{
-		cout << item->GetDisplayName() << " " << item->GetFullName() << " " << item->GetSku() << " ";
-		cout << item->GetDate() << item->GetQuantity() << " " << item->GetOrderPoint() << endl;
+		cout << item->GetDisplayName() << "| " << item->GetFullName() << "| " << item->GetSku() << "| ";
+		cout << item->GetDate() << "| " << item->GetQuantity() << "| " << item->GetOrderPoint() << endl;
 	}
 
     return 0;
