@@ -21,6 +21,7 @@ using std::string;
 #include "User.hpp"
 #include "Item.hpp"
 #include "Inventory.hpp"
+#include "Fridge.hpp"
 
 // Prototypes
 
@@ -30,26 +31,29 @@ int main()
     cout << endl << "Welcome to your SmileFridge!!!" << endl << endl;
 
     User *user = new User("Joe Blow", "joe@blow.com", "AFE87WE34FES");
-    Inventory *inventory = new Inventory();
-    vector<Item*> contents = inventory->GetContents();
-	vector<Item*> favorites = inventory->GetFavorites();
+    Fridge *fridge = new Fridge(user);
+    map<Item*, int> contents = fridge->GetContents();
+	map<Item*, int> favorites = fridge->GetFavorites();
 
     cout << "Printing fridge contents:" << endl << endl;
 
-    for (Item* item : contents)
+	Item* item;
+	for (map<Item*, int>::iterator it = contents.begin(); it != contents.end(); it++)
     {
+		item = it->first;
         cout << item->GetDisplayName() << "| " << item->GetFullName() << "| " << item->GetSku() << "| ";
-        cout << item->GetDate() << "| " << item->GetQuantity() << "| " << item->GetOrderPoint();
+        cout << item->GetDate() << "| " << it->second << "| " << item->GetOrderPoint();
         if (item->IsFavorite()) cout << "| Favorite";
         cout << endl;
     }
 
 	cout << endl << "Printing fridge favorites:" << endl << endl;
 
-	for (Item* item : favorites)
+	for (map<Item*, int>::iterator it = favorites.begin(); it != favorites.end(); it++)
 	{
+		item = it->first;
 		cout << item->GetDisplayName() << "| " << item->GetFullName() << "| " << item->GetSku() << "| ";
-		cout << item->GetDate() << "| " << item->GetQuantity() << "| " << item->GetOrderPoint() << endl;
+		cout << item->GetDate() << "| " << it->second << "| " << item->GetOrderPoint() << endl;
 	}
 
     return 0;

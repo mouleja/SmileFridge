@@ -4,9 +4,9 @@
 #include <sstream>
 
 
-#include "Inventory.hpp"
+#include "Fridge.hpp"
 
-void Inventory::GetItemsFromCsv(string filename)
+void Fridge::GetItemsFromCsv(string filename)
 {
 	// Note: partially adapted from https://stackoverflow.com/questions/19936483/c-reading-csv-file
 
@@ -14,7 +14,7 @@ void Inventory::GetItemsFromCsv(string filename)
 
 	if (inFile.bad())	// Check for error opening file
 	{
-		std::cout <<"Error reading file: " << filename << std::endl;
+		std::cout << "Error reading file: " << filename << std::endl;
 		return;
 	}
 
@@ -46,17 +46,17 @@ void Inventory::GetItemsFromCsv(string filename)
 			fav = false;
 		}
 
-		_contents.push_back(new Item(displayname, fullname, sku, date, /*quant,*/ op, fav));	// Create object & add to vector
+		_contents.insert({new Item(displayname, fullname, sku, date, op, fav), quant });	// Create {item, int} pair & add to map
 	}
 
 	inFile.close();
 }
 
-vector<Item*> Inventory::GetFavorites() {
-	vector<Item*> favorites;
-	for (Item* item : _contents) {
-		if (item->IsFavorite()) {
-			favorites.push_back(item);
+map<Item*, int> Fridge::GetFavorites() {
+	map<Item*, int> favorites;
+	for (map<Item*, int>::iterator it = _contents.begin(); it != _contents.end(); it++ ) {
+		if (it->first->IsFavorite()) {
+			favorites.insert({ it->first, it->second });
 		}
 	}
 	return favorites;
