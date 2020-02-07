@@ -11,16 +11,9 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-#include <string>
-using std::string;
-
-#include <iomanip>
-#include <fstream>
-#include <sstream>
-
 #include "User.hpp"
-#include "Item.hpp"
-#include "Inventory.hpp"
+#include "Items.hpp"
+//#include "Inventory.hpp"
 #include "Fridge.hpp"
 
 // Prototypes
@@ -30,30 +23,50 @@ int main()
 {
     cout << endl << "Welcome to your SmileFridge!!!" << endl << endl;
 
-    User *user = new User("Joe Blow", "joe@blow.com", "AFE87WE34FES");
-    Fridge *fridge = new Fridge(user);
-    map<Item*, int> contents = fridge->GetContents();
-	map<Item*, int> favorites = fridge->GetFavorites();
-
+    Fridge* fridge = new Fridge();
+    User* user = fridge->GetUser();
+    map<string, ItemInfo*> items = fridge->GetAllItems();
+    vector<FridgeItem*> contents = fridge->GetContents();
+    
     cout << "Printing fridge contents:" << endl << endl;
 
-	Item* item;
-	for (map<Item*, int>::iterator it = contents.begin(); it != contents.end(); it++)
+	for (FridgeItem* i : contents)
     {
-		item = it->first;
-        cout << item->GetDisplayName() << "| " << item->GetFullName() << "| " << item->GetSku() << "| ";
-        cout << item->GetDate() << "| " << it->second << "| " << item->GetOrderPoint();
-        if (item->IsFavorite()) cout << "| Favorite";
+        ItemInfo* item = i->itemInfo;
+        cout << "displayName| fullName| sku| dateDay, dateYear| quantity| goodFor| favorite";
+        cout << endl << endl;
+        cout << item->displayName << "| " << item->fullName << "| " << item->sku << "| ";
+        cout << i->dateDay << ", " << i->dateYear << "| " << i->quantity << "| " << i->goodFor;
+        if (item->favorite) cout << "| Favorite";
         cout << endl;
     }
 
 	cout << endl << "Printing fridge favorites:" << endl << endl;
 
-	for (map<Item*, int>::iterator it = favorites.begin(); it != favorites.end(); it++)
+    map<string, ItemInfo*>::iterator it = items.begin();
+	while (it != items.end())
 	{
-		item = it->first;
-		cout << item->GetDisplayName() << "| " << item->GetFullName() << "| " << item->GetSku() << "| ";
-		cout << item->GetDate() << "| " << it->second << "| " << item->GetOrderPoint() << endl;
+        ItemInfo* item = it->second;
+        if (item->favorite)
+        {
+            int fridgeIndex = fridge->GetIndexBySku(item->sku);
+            int quantInFridge = 0;
+            if (fridgeIndex > -1)
+            {
+                quantInFridge = contents[fridgeIndex]->quantity;
+            }
+            cout << item->displayName << " - ";
+            if (quantInFridge)
+            {
+                cout << quantInFridge;
+            }
+            else
+            {
+                cout << "None";
+            }
+            cout << " in fridge." << endl << endl;
+        }
+        ++it;
 	}
 
     return 0;

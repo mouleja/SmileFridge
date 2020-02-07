@@ -6,7 +6,7 @@
 
 #include "Inventory.hpp"
 
-void Inventory::GetItemsFromCsv(string filename)
+void Inventory::getInventoryFromCsv(string filename)
 {
 	// Note: partially adapted from https://stackoverflow.com/questions/19936483/c-reading-csv-file
 
@@ -18,57 +18,36 @@ void Inventory::GetItemsFromCsv(string filename)
 		return;
 	}
 
-	string line, displayname, fullname, sku, date, quantStr, opStr, favStr;
-	int quant, op;
+	string line, sku, dateYearStr, dateDayStr, quantStr, goodForStr;
+	int dy, dd, quant, gf;
 	bool fav;
 
 	while (getline(inFile, line))	// Get line from file
 	{
 		std::istringstream ss(line);	// Split into fields
 
-		getline(ss, displayname, ',');
-		getline(ss, fullname, ',');
 		getline(ss, sku, ',');
-		getline(ss, date, ',');
+		getline(ss, dateYearStr, ',');
+		getline(ss, dateDayStr, ',');
 		getline(ss, quantStr, ',');
-		getline(ss, opStr, ',');
-		getline(ss, favStr, ',');
+		getline(ss, goodForStr, ',');
 
+		dy = std::stoi(dateYearStr);
+		dd = std::stoi(dateDayStr);
 		quant = std::stoi(quantStr);
-		op = std::stoi(opStr);
+		gf = std::stoi(goodForStr);
 
-		if (favStr == "true")
-		{
-			fav = true;
-		}
-		else
-		{
-			fav = false;
-		}
-
-		_contents.push_back(new Item(displayname, fullname, sku, date, /*quant,*/ op, fav));	// Create object & add to vector
+		_contents.push_back(InventoryItem(sku, dy, dd, quant, gf));	// Create object & add to vector
 	}
 
 	inFile.close();
 }
 
-vector<Item*> Inventory::GetFavorites() {
-	vector<Item*> favorites;
-	for (Item* item : _contents) {
-		if (item->IsFavorite()) {
-			favorites.push_back(item);
-		}
+
+InventoryItem Inventory::GetBySku(string sku)
+{
+	for (InventoryItem i : _contents)
+	{
+		if (i.sku == sku) return i;
 	}
-	return favorites;
 }
-
-/* Item Properties
-	string _displayName;
-	string _fullName;
-	string _sku;
-	string _date;
-	int _quantity;
-	int _orderPoint;
-	bool _favorite;
-
-*/
