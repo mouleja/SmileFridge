@@ -1,7 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <string>
 using std::vector;
+using std::string;
 
 #include "Item.hpp"
 
@@ -18,5 +20,8 @@ public:
     }
     vector<Item*> GetContents() { return _contents; }
 	vector<Item*> GetFavorites();
-
+  void AddItem(string, int);
+  void RemoveItem(string, int);
+  void CreateNewItem(string, string, string);
+  int ItemInContents(string);
 };

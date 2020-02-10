@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <time>
 
 
 #include "Inventory.hpp"
@@ -60,7 +61,55 @@ vector<Item*> Inventory::GetFavorites() {
 		}
 	}
 	return favorites;
+
+//Adds an item to the list of contents. Runs the "CreateNewItem" function
+//if the item is not in contents already. Needs to be adjusted to track
+//items that are already known but not in contents
+void Inventory::AddItem(string name, int quantity){
+	//Will return -1 if item was not found
+	int place = this->ItemInContents(name);
+	if(place < 0){
+		Item* new_item = this->CreateNewItem(name, name, "Unknown");
+		this->_contents.push_back(new_item);
+		place = this->_contents.size() - 1;
+	}
+	this->_contents[i]->AddQuantity(quantity);
 }
+
+//If the item exists in the fridge's contents, remove the given number
+//of units from the fridge. If that brings it below 0, then set the quantity
+//to 0.
+void Inventory::RemoveItem(string name, int quantity){
+	int place = this->ItemInContents(name);
+	if(!(place < 0 || place > this->_contents.size())){
+		this->_contents[place]->RemoveQuantity(quantity);
+		if(this->_contents[place]->GetQuantity() < 0){
+			this->_contents[place]->SetQuantity(0);
+		}
+	}
+}
+
+//Creates a new item with the given display name, full name, and SKU with the current date.
+Item* Inventory::CreateNewItem(string display_name, string full_name, string sku){
+	tm *ltm = localtime(&now);
+	string date = static_cast<string>(ltm->tm_month) + "/" + static_cast<string>(ltm->tm_day) + "/" + static_cast<string>(1900 + ltm->tm_year);
+	Item* new_item = new Item(display_name, full_name, sku, date, 0, 0, false);
+	return new_item;
+}
+
+int Inventory::ItemInContents(string name){
+	//Checks the name we're looking for agains the full name and display name
+	//of each item in the fridge's contents and returns the index of the item, or
+	//-1 if it doesn't exist.
+	for(int i = 0; i < this->_contents.size(); i++){
+		if(strcmp(name, this->_contents[i]->displayName) == 0 ||
+		 	 strcmp(name, this->_contents[i]->fullName == 0){
+				 return i;
+		}
+	}
+	return -1;
+}
+
 
 /* Item Properties
 	string _displayName;
