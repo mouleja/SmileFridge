@@ -21,10 +21,13 @@
   <ItemGroup>
     <ClCompile Include="FridgeTestMain.cpp" />
     <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="iohelper.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inventory.hpp" />
+    <ClInclude Include="iohelper.hpp" />
     <ClInclude Include="Item.hpp" />
     <ClInclude Include="User.hpp" />
   </ItemGroup>
