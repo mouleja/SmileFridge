@@ -1,6 +1,4 @@
 #include <ctime>
-#include <string>
-using std::string;
 #include "DateConverter.hpp"
 
 // Converts current time into TwoIntDate structure
@@ -18,7 +16,7 @@ Date GetCurrentDate()
 }
 
 // Make TwoIntDate from 3 ints: MM,DD,YYYY
-Date MakeTwoIntDate(int month, int day, int year)
+Date MakeDate(int month, int day, int year)
 {
     tm* newDate = new tm();
     
@@ -76,7 +74,7 @@ int GetDaysBetween(Date date1, Date date2)
 }
 
 // Compare 2 TwoIntDates, return -1 if first date before, 0 if equal, 1 if later
-int CompareTwoIntDates(Date date1, Date date2)
+int CompareDates(Date date1, Date date2)
 {
     if (date1.Year < date2.Year)
     {
@@ -98,7 +96,7 @@ int CompareTwoIntDates(Date date1, Date date2)
 }
 
 // Add a number of days to a TwoIntDate (returns new TwoIntDate)
-Date AddDaysToTwoIntDate(Date date, int days)
+Date AddDaysToDate(Date date, int days)
 {
     int newDays = date.Days + days;
     int leap = (date.Year % 4 == 0) ? 1 : 0; // for leap years add 1 to days left in year
@@ -108,7 +106,7 @@ Date AddDaysToTwoIntDate(Date date, int days)
 }
 
 // Get a string from TwoIntDate in form "MM/DD/YYYY"
-string GetTwoIntDateString(Date date)
+string GetDateString(Date date)
 {
     tm* newDate = new tm();
     // NOTE: mktime ignores tm_ydays! But it does interpret tm_mday as days since 1st of tm_mon

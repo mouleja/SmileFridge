@@ -72,7 +72,7 @@ int main()
     */
 
     Date today = GetCurrentDate();
-    Date date1 = MakeTwoIntDate(12, 25, 2016);
+    Date date1 = MakeDate(12, 25, 2016);
     cout << "Today is day number " << today.Days << " of " << today.Year << endl;
     cout << "It has been " << GetDaysBetween(today, date1) << " days since 12/25/2016." << endl;
     
@@ -83,19 +83,19 @@ int main()
     cout << "[Second day (1-31)] [Second Month(1-12)] [Second Year(1900-2900)] e.g.: 2 11 2020" << endl;
     cin >> day2 >> month2 >> year2;
 
-    Date first = MakeTwoIntDate(day1, month1, year1);
-    Date second = MakeTwoIntDate(day2, month2, year2);
+    Date first = MakeDate(day1, month1, year1);
+    Date second = MakeDate(day2, month2, year2);
     cout << "There are " << GetDaysBetween(first, second) << " days between the two dates.";
-    int diff = CompareTwoIntDates(first, second);
+    int diff = CompareDates(first, second);
     if (diff == -1) cout << "  The first date is earlier.";
     else if (diff == 0) cout << "  The dates are the same.";
     else cout << "  The first date is later.";
     cout << endl << endl;
 
     cout << "90 days after 11/15/2019 is ";
-     date1 = MakeTwoIntDate(11, 15, 2019);
-    date1 = AddDaysToTwoIntDate(date1, 90);
-    cout << GetTwoIntDateString(date1) << endl;
+     date1 = MakeDate(11, 15, 2019);
+    date1 = AddDaysToDate(date1, 90);
+    cout << GetDateString(date1) << endl;
 
     cout << "The Date format of that result is: ";
     GetDateInts(date1, &year1, &day1);
