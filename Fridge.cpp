@@ -73,3 +73,11 @@ int Fridge::GetIndexBySku(string sku)
 	}
 	return -1;
 }
+
+void Fridge::orderLowItems() {
+	for (int i = 0; i < _contents.size(); i++) {
+		if (_contents[i]->quantity < _contents[i]->itemInfo->minQuantity) {
+			oList.add(_contents[i]->itemInfo);
+		}//end if
+	}//end for
+}

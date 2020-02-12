@@ -5,6 +5,8 @@ using std::vector;
 
 #include "Items.hpp"
 #include "User.hpp"
+#include "GroceryList.hpp"
+#include "OrderList.hpp"
 
 #define USERNAME "Joseph Blow"
 #define EMAIL "joeb@low.com"
@@ -30,6 +32,8 @@ private:
 	User* _user;
 	map<string, ItemInfo*> _items;
 	vector<FridgeItem*> _contents;
+	GroceryList gList = GroceryList();
+	OrderList oList = OrderList();
 	void getInventoryFromCsv(string sku);
 
 public:
@@ -46,4 +50,5 @@ public:
 	bool isFavorite(string sku) { return _items.at(sku)->favorite; }
 	void Use(string sku, int amount = 1);
 	int GetIndexBySku(string sku);
+	void orderLowItems();
 };

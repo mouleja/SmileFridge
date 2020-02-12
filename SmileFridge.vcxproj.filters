@@ -27,6 +27,12 @@
     <ClCompile Include="Items.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GroceryList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="User.hpp">
@@ -39,6 +45,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Items.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GroceryList.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderList.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
