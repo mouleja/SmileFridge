@@ -15,6 +15,7 @@ using std::endl;
 #include "Items.hpp"
 //#include "Inventory.hpp"
 #include "Fridge.hpp"
+#include "DateConverter.hpp"
 
 // Prototypes
 
@@ -22,7 +23,7 @@ using std::endl;
 int main()
 {
     cout << endl << "Welcome to your SmileFridge!!!" << endl << endl;
-
+    /*
     Fridge* fridge = new Fridge();
     User* user = fridge->GetUser();
     map<string, ItemInfo*> items = fridge->GetAllItems();
@@ -68,7 +69,38 @@ int main()
         }
         ++it;
 	}
+    */
+
+    Date today = GetCurrentDate();
+    Date date1 = MakeTwoIntDate(12, 25, 2016);
+    cout << "Today is day number " << today.Days << " of " << today.Year << endl;
+    cout << "It has been " << GetDaysBetween(today, date1) << " days since 12/25/2016." << endl;
+    
+    int day1 = 1, month1 = 1, year1 = 1900, day2 = 1, month2 = 1, year2 = 1900;
+    cout << "Enter 2 dates:" << endl;
+    cout << "[First day (1-31)] [First Month(1-12)] [First Year(1900-2900)] e.g.: 12 25 2019" << endl;
+    cin >> day1 >> month1 >> year1;
+    cout << "[Second day (1-31)] [Second Month(1-12)] [Second Year(1900-2900)] e.g.: 2 11 2020" << endl;
+    cin >> day2 >> month2 >> year2;
+
+    Date first = MakeTwoIntDate(day1, month1, year1);
+    Date second = MakeTwoIntDate(day2, month2, year2);
+    cout << "There are " << GetDaysBetween(first, second) << " days between the two dates.";
+    int diff = CompareTwoIntDates(first, second);
+    if (diff == -1) cout << "  The first date is earlier.";
+    else if (diff == 0) cout << "  The dates are the same.";
+    else cout << "  The first date is later.";
+    cout << endl << endl;
+
+    cout << "90 days after 11/15/2019 is ";
+     date1 = MakeTwoIntDate(11, 15, 2019);
+    date1 = AddDaysToTwoIntDate(date1, 90);
+    cout << GetTwoIntDateString(date1) << endl;
+
+    cout << "The Date format of that result is: ";
+    GetDateInts(date1, &year1, &day1);
+    cout << "(" << year1 << ", " << day1 << ")" << endl;
 
     return 0;
-} //End Main
+ } //End Main
 

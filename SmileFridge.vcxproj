@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DateConverter.cpp" />
     <ClCompile Include="Fridge.cpp" />
     <ClCompile Include="FridgeTestMain.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Items.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DateConverter.hpp" />
     <ClInclude Include="Fridge.hpp" />
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="Items.hpp" />
