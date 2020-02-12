@@ -111,6 +111,8 @@ Date AddDaysToTwoIntDate(Date date, int days)
 string GetTwoIntDateString(Date date)
 {
     tm* newDate = new tm();
+    // NOTE: mktime ignores tm_ydays! But it does interpret tm_mday as days since 1st of tm_mon
+    // so here I have to re-interpret Days as days since Jan 1st (+1 cuz 1/1 is day 0)
     newDate->tm_mon = 0;
     newDate->tm_mday = date.Days + 1;
     newDate->tm_year = date.Year - 1900;
