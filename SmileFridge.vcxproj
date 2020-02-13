@@ -32,6 +32,7 @@
     <ClInclude Include="User.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="inventory_list.csv" />
     <None Include="items_list.csv" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
