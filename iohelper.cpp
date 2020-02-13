@@ -348,7 +348,7 @@ bool doesStringHaveSpaces(string input)
 {
 	bool stringHasSpaces = false;
 
-	for (int i = 0; i < input.length(); i++)
+	for (unsigned i = 0; i < input.length(); i++)
 	{
 		if (input[i] == ' ')
 		{

@@ -19,20 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Fridge.cpp" />
     <ClCompile Include="FridgeTestMain.cpp" />
-    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="iohelper.cpp" />
-    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Items.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Inventory.hpp" />
+    <ClInclude Include="Fridge.hpp" />
     <ClInclude Include="iohelper.hpp" />
-    <ClInclude Include="Item.hpp" />
+    <ClInclude Include="Items.hpp" />
     <ClInclude Include="User.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="itemslist.csv" />
+    <None Include="items_list.csv" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

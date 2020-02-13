@@ -33,9 +33,10 @@ private:
 	void getInventoryFromCsv(string sku);
 
 public:
-	Fridge()
+	Fridge(User *user)
 	{
-		_user = new User(USERNAME, EMAIL, ACCTNO);
+		_user = user;
+
 		_items = Items().GetAll();
 		getInventoryFromCsv(INVFILE);
 	} 
@@ -46,4 +47,7 @@ public:
 	bool isFavorite(string sku) { return _items.at(sku)->favorite; }
 	void Use(string sku, int amount = 1);
 	int GetIndexBySku(string sku);
+	FridgeItem* GetInfoBySku(string sku);
+	vector<ItemInfo*> GetFavorites();
+	void AddItem(string sku, int quantity);
 };

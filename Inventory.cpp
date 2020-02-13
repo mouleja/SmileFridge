@@ -2,7 +2,6 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
-#include <time>
 
 
 #include "Inventory.hpp"
@@ -47,25 +46,25 @@ void Inventory::GetItemsFromCsv(string filename)
 			fav = false;
 		}
 
-		_contents.push_back(new Item(displayname, fullname, sku, date, quant, op, fav));	// Create object & add to vector
+		_contents.push_back(new Items(displayname, fullname, sku, date, quant, op, fav));	// Create object & add to vector
 	}
 
 	inFile.close();
 }
 
-vector<Item*> Inventory::GetFavorites() {
-	vector<Item*> favorites;
-	for (Item* item : _contents) {
-		if (item->IsFavorite()) {
+vector<Items*> Inventory::GetFavorites() {
+	vector<Items*> favorites;
+	for (Items* item : _contents) {
+		if (item->isFavorite("")) {
 			favorites.push_back(item);
 		}
 	}
 	return favorites;
 
-//Adds an item to the list of contents. Runs the "CreateNewItem" function
+	//Adds an item to the list of contents. Runs the "CreateNewItem" function
 //if the item is not in contents already. Needs to be adjusted to track
 //items that are already known but not in contents
-void Inventory::AddItem(string name, int quantity){
+void Inventory::AddItem(string name, int quantity) {
 	//Will return -1 if item was not found
 	int place = this->ItemInContents(name);
 	if(place < 0){

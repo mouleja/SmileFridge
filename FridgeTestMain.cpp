@@ -19,10 +19,11 @@ using std::string;
 #include <fstream>
 #include <sstream>
 
-#include "User.hpp"
-#include "Item.hpp"
-#include "Inventory.hpp"
+//#include "User.hpp"
+//#include "Items.hpp"
+//#include "Inventory.hpp"
 #include "iohelper.hpp"
+#include "Fridge.hpp"
 
 // Prototypes
 
@@ -67,7 +68,7 @@ int main()
     
 
     //Creating new User object
-    User* newUser = new User(userName, userEmail, userPassword);
+    User* newUser = new User(userName, userEmail, userPassword);;
 
     if (accountChoice == 1)
     {
@@ -78,14 +79,11 @@ int main()
         newUser->createAccount();
     }
 
+    Fridge* fridge = new Fridge(newUser);
+    map<string, ItemInfo*> items = fridge->GetAllItems();
+    vector<FridgeItem*> contents = fridge->GetContents();
+    vector<ItemInfo*> favorites = fridge->GetFavorites();
 
-    //Temporary hard coded user information
-    User* user = new User("Joe Blow", "joe@blow.com", "Password123456789"); //"AFE87WE34FES"
-    Inventory* inventory = new Inventory();
-    vector<Item*> contents = inventory->GetContents();
-    vector<Item*> favorites = inventory->GetFavorites();
-
-    
     //Menu loop for user to navigate the app
     while (menuChoice != 6)
     {
@@ -99,11 +97,12 @@ int main()
         case 1: //Show user's SmileFridge Contents
             cout << "Printing fridge contents:" << endl << endl;
 
-            for (Item* item : contents)
+            for (FridgeItem* i : contents)
             {
-                cout << item->GetDisplayName() << "| " << item->GetFullName() << "| " << item->GetSku() << "| ";
-                cout << item->GetDate() << "| " << item->GetQuantity() << "| " << item->GetOrderPoint();
-                if (item->IsFavorite()) cout << "| Favorite";
+                ItemInfo* item = i->itemInfo;
+                cout << item->displayName << "| " << item->fullName << "| " << item->sku << "| ";
+                cout << i->dateDay << ", " << i->dateYear << "| " << i->quantity << "| " << i->goodFor;
+                if (item->favorite) cout << "| Favorite";
                 cout << endl;
             }
 
@@ -111,12 +110,20 @@ int main()
         case 2: //Show user's favorites
             cout << endl << "Printing fridge favorites:" << endl << endl;
 
-            for (Item* item : favorites)
+            for (ItemInfo* item : favorites)
             {
-                cout << item->GetDisplayName() << "| " << item->GetFullName() << "| " << item->GetSku() << "| ";
-                cout << item->GetDate() << "| " << item->GetQuantity() << "| " << item->GetOrderPoint() << endl;
-            }
-
+                cout << item->displayName << "| (" << item->sku << ")| ";
+                FridgeItem* current = fridge->GetInfoBySku(item->sku);
+                if (current != nullptr && current->quantity > 0)
+                {
+                    cout << current->quantity;
+                }
+                else
+                {
+                    cout << "None";
+                }
+                cout << " in the fridge." << endl << endl;
+            }        
             break;
         case 3: //Add New Item to user's SmileFridge
 

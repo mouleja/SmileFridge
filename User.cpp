@@ -24,7 +24,9 @@ using std::to_string;
 
 void User::findAccountNumber()
 {
-
+	// TODO - Search accounts.csv to see if matching name and password exist
+	// Code below fakes it as if found
+	SetAccount(1234567);
 }
 
 //*****************************************************************************************

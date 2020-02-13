@@ -5,21 +5,21 @@
 using std::vector;
 using std::string;
 
-#include "Item.hpp"
+#include "Items.hpp"
 
 class Inventory
 {
 private:
-    vector<Item*> _contents;
+    vector<Items*> _contents;
     void GetItemsFromCsv(string filename);
 public:
     Inventory()
     {
-        _contents = vector<Item*>();
+        _contents = vector<Items*>();
         GetItemsFromCsv("itemslist.csv");
     }
-    vector<Item*> GetContents() { return _contents; }
-	vector<Item*> GetFavorites();
+    vector<Items*> GetContents() { return _contents; }
+	vector<Items*> GetFavorites();
   void AddItem(string, int);
   void RemoveItem(string, int);
   void CreateNewItem(string, string, string);
