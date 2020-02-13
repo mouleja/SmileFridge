@@ -40,7 +40,8 @@ public:
 	Fridge()
 	{
 		_user = new User(USERNAME, EMAIL, ACCTNO);
-		_items = Items().GetAll();
+		Items* i = new Items();
+		_items = i->GetAll();
 		getInventoryFromCsv(INVFILE);
 	} 
 
