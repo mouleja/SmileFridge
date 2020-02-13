@@ -1,7 +1,7 @@
 # SmileFridge
 
 ### Linux Instructions
-Copy all files (ignore *.v* & .git* if you like) to a new folder
+Copy all files (ignore \*.v\* & .git* if you like) to a new folder
 type `g++ -std=c++11 -o FridgeTest *.cpp` into a terminal
 and then run `FridgeTest`.
 
