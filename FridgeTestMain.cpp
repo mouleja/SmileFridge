@@ -24,6 +24,7 @@ using std::string;
 //#include "Inventory.hpp"
 #include "iohelper.hpp"
 #include "Fridge.hpp"
+#include "JsonConverter.hpp"
 
 // Prototypes
 
@@ -83,6 +84,11 @@ int main()
     map<string, ItemInfo*> items = fridge->GetAllItems();
     vector<FridgeItem*> contents = fridge->GetContents();
     vector<ItemInfo*> favorites = fridge->GetFavorites();
+
+    // JSON test
+    string json = GetFridgeJson(contents, "contents");
+    cout << json << endl;
+    cout << PrettyPrintJson(json);
 
     //Menu loop for user to navigate the app
     while (menuChoice != 6)
