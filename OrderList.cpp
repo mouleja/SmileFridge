@@ -7,7 +7,7 @@ void OrderList::add(ItemInfo* item) {
 void OrderList::remove(ItemInfo* item) {
 	for (int i = 0; i < list.size(); i++) {
 		if (list[i] == item) {
-			list.erase[i];
+			list.erase(list.begin()+i);
 			return;
 		}
 	}

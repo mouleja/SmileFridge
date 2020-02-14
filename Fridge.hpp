@@ -32,9 +32,9 @@ private:
 	User* _user;
 	map<string, ItemInfo*> _items;
 	vector<FridgeItem*> _contents;
-	GroceryList gList = GroceryList();
-	OrderList oList = OrderList();
-	void getInventoryFromCsv(string sku);
+	map<string, int> groceryList;
+	map<string, int> orderList;
+	void getInventoryFromCsv(string filename);
 
 public:
 	Fridge()
@@ -51,4 +51,7 @@ public:
 	void Use(string sku, int amount = 1);
 	int GetIndexBySku(string sku);
 	void orderLowItems();
+	void updateInventory();
+	void placeOrder();
+	void printOrderList();
 };

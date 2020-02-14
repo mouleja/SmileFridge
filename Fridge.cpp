@@ -77,7 +77,40 @@ int Fridge::GetIndexBySku(string sku)
 void Fridge::orderLowItems() {
 	for (int i = 0; i < _contents.size(); i++) {
 		if (_contents[i]->quantity < _contents[i]->itemInfo->minQuantity) {
-			oList.add(_contents[i]->itemInfo);
+			int orderMultiple = 1;
+			int currentQuant = _contents[i]->quantity;
+			int minQuant = _contents[i]->itemInfo->minQuantity;
+			while (currentQuant < minQuant) {
+				currentQuant += _contents[i]->itemInfo->orderQuantity;
+				orderMultiple++;
+			}//end while
+			orderList.insert({ _contents[i]->itemInfo->sku, orderMultiple });
 		}//end if
 	}//end for
+}
+
+void Fridge::updateInventory() {
+	std::ofstream outFile(INVFILE, std::ios::trunc);
+	for (FridgeItem* fridgeItem : _contents) {
+		ItemInfo* item = fridgeItem->itemInfo;
+		outFile << item->sku << "," << fridgeItem->quantity << "," << fridgeItem->dateYear << "," << fridgeItem->dateDay
+			<< "," << fridgeItem->goodFor << std::endl;
+	}
+	outFile.close();
+}
+
+void Fridge::placeOrder() {
+	for (std::map<string, int>::iterator it = orderList.begin(); it != orderList.end(); it++) {
+		FridgeItem* updateItem = _contents[GetIndexBySku(it->first)];
+		updateItem->quantity += (it->second * updateItem->itemInfo->orderQuantity);
+	}
+	orderList.clear();
+}
+
+void Fridge::printOrderList() {
+	std::cout << "Item name | Order Units" << std::endl << std::endl;
+	for (std::map<string, int>::iterator it = orderList.begin(); it != orderList.end(); it++) {
+		ItemInfo* orderItem = _items.at(it->first);
+		std::cout << orderItem->displayName << " | " << it->second << std::endl;
+	}
 }

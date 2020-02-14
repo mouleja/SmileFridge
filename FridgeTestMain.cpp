@@ -30,13 +30,13 @@ int main()
     
     cout << "Printing fridge contents:" << endl << endl;
 
+	cout << "displayName| fullName| sku| dateDay, dateYear| quantity| order quantity | goodFor| favorite";
+	cout << endl << endl;
 	for (FridgeItem* i : contents)
     {
         ItemInfo* item = i->itemInfo;
-        cout << "displayName| fullName| sku| dateDay, dateYear| quantity| goodFor| favorite";
-        cout << endl << endl;
         cout << item->displayName << "| " << item->fullName << "| " << item->sku << "| ";
-        cout << i->dateDay << ", " << i->dateYear << "| " << i->quantity << "| " << i->goodFor;
+        cout << i->dateDay << ", " << i->dateYear << "| " << i->quantity << "| " << item->orderQuantity << "|" << i->goodFor;
         if (item->favorite) cout << "| Favorite";
         cout << endl;
     }
@@ -69,6 +69,13 @@ int main()
         ++it;
 	}
 
+	cout << "Ordering Low Items" << endl;
+	fridge->orderLowItems();
+	fridge->printOrderList();
+	cout << "Placing Order" << endl;
+	fridge->placeOrder();
+	cout << "Updating Inventory" << endl;
+	fridge->updateInventory();
     return 0;
 } //End Main
 

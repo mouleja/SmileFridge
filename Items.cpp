@@ -56,8 +56,8 @@ void Items::getItemsFromCsv(string filename)
 		return;
 	}
 
-	string line, displayname, fullname, sku, quantStr, mqStr, favStr;
-	int mq;
+	string line, displayname, fullname, sku, mqStr, oqStr, favStr;
+	int mq, oq;
 	bool fav;
 
 	while (getline(inFile, line))	// Get line from file
@@ -68,9 +68,11 @@ void Items::getItemsFromCsv(string filename)
 		getline(ss, fullname, ',');
 		getline(ss, sku, ',');
 		getline(ss, mqStr, ',');
+		getline(ss, oqStr, ',');
 		getline(ss, favStr, ',');
 
 		mq = std::stoi(mqStr);
+		oq = std::stoi(oqStr);
 
 		if (favStr == "true")
 		{
@@ -81,7 +83,7 @@ void Items::getItemsFromCsv(string filename)
 			fav = false;
 		}
 
-		ItemInfo* current = new ItemInfo(displayname, fullname, sku, mq, fav);
+		ItemInfo* current = new ItemInfo(displayname, fullname, sku, mq, oq, fav);
 		_items.insert({ sku, current });	// Create {sku, itemInfo*} pair & add to map
 	}
 
