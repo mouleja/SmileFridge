@@ -14,18 +14,6 @@ bool Items::isFavorite(string sku)
 	return (_items[sku]->favorite == true);
 }
 
-std::vector<string> Items::GetFavoriteSkus()
-{
-	std::vector<string> skus;
-	map<string, ItemInfo*>::iterator it = _items.begin();
-
-	while (it != _items.end())
-	{
-		if ((it->second)->favorite) skus.push_back(it->first);
-	}
-	return skus;
-}
-
 // Change minQuanity for an item (by sku)
 void Items::SetMinQuantity(string sku, int amount)
 {
@@ -81,7 +69,7 @@ void Items::getItemsFromCsv(string filename)
 			fav = false;
 		}
 
-		ItemInfo* current = new ItemInfo(displayname, fullname, sku, mq, fav);
+		ItemInfo* current = new ItemInfo(sku, displayname, fullname, mq, fav);
 		_items.insert({ sku, current });	// Create {sku, itemInfo*} pair & add to map
 	}
 

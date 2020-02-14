@@ -18,7 +18,10 @@
     <ClCompile Include="FridgeTestMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Inventory.cpp">
+    <ClCompile Include="iohelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Fridge.cpp">
@@ -35,7 +38,7 @@
     <ClInclude Include="User.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Inventory.hpp">
+    <ClInclude Include="iohelper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Fridge.hpp">
@@ -49,7 +52,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="inventory_list.csv" />
     <None Include="items_list.csv" />
+    <None Include="inventory_list.csv" />
   </ItemGroup>
 </Project>

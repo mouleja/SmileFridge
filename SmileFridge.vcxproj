@@ -22,13 +22,14 @@
     <ClCompile Include="DateConverter.cpp" />
     <ClCompile Include="Fridge.cpp" />
     <ClCompile Include="FridgeTestMain.cpp" />
-    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="iohelper.cpp" />
     <ClCompile Include="Items.cpp" />
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DateConverter.hpp" />
     <ClInclude Include="Fridge.hpp" />
-    <ClInclude Include="Inventory.hpp" />
+    <ClInclude Include="iohelper.hpp" />
     <ClInclude Include="Items.hpp" />
     <ClInclude Include="User.hpp" />
   </ItemGroup>
