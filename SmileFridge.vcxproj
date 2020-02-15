@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="climateControl.cpp" />
     <ClCompile Include="Fridge.cpp" />
     <ClCompile Include="FridgeTestMain.cpp" />
     <ClCompile Include="iohelper.cpp" />
@@ -26,6 +27,7 @@
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="climateControl.h" />
     <ClInclude Include="Fridge.hpp" />
     <ClInclude Include="iohelper.hpp" />
     <ClInclude Include="Items.hpp" />
@@ -34,6 +36,7 @@
   <ItemGroup>
     <None Include="inventory_list.csv" />
     <None Include="items_list.csv" />
+    <None Include="README.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
