@@ -9,7 +9,7 @@ class climateEntry
 {
     public:
 
-        climateEntry(){};
+        //climateEntry(){};
         climateEntry(double h, double freeze, double fridge, string t){
 
             setHumidity(h);

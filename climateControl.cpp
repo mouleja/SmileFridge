@@ -46,7 +46,7 @@ string climateControl::timeNow()
     struct tm nowLocal;
 
     now = time(NULL);
-    nowLocal = *localtime(&now);
+    localtime_s(&nowLocal, &now);
     string time = std::to_string(nowLocal.tm_hour) + ":" + std::to_string(nowLocal.tm_min) + ":" + std::to_string(nowLocal.tm_sec);
     cout << time << endl;
 
@@ -57,21 +57,22 @@ string climateControl::utcTime()
 {
     //referenced: https://www.youtube.com/watch?v=YjGrUVGKcgs
     time_t now;
-    struct tm nowLocal;
+    struct tm gmtm;
 
     now = time(NULL);
 
-    tm *gmtm = gmtime(&now);
-    char* dt = asctime(gmtm);
+    gmtime_s(&gmtm, &now);
+    char dt[32];
+    asctime_s(dt, 32, &gmtm);
 
-    return dt;
+    return string(dt);
 }
 
 climateEntry climateControl::getClimateFromFile()
 {
 
     string humidtyStr, freezerStr, fridgeStr, time;
-    double humidityDub, freezerDub, fridgeDub;
+    //double humidityDub, freezerDub, fridgeDub;
     ifstream csv("currentClimate.csv");
 
     if(csv.bad())
