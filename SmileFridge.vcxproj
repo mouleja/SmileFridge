@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="climateControl.cpp" />
+    <ClCompile Include="climateEntry.cpp" />
     <ClCompile Include="Fridge.cpp" />
     <ClCompile Include="FridgeTestMain.cpp" />
     <ClCompile Include="iohelper.cpp" />
@@ -28,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="climateControl.h" />
+    <ClInclude Include="climateEntry.h" />
     <ClInclude Include="Fridge.hpp" />
     <ClInclude Include="iohelper.hpp" />
     <ClInclude Include="Items.hpp" />
