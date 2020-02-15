@@ -24,6 +24,9 @@ using std::string;
 //#include "Inventory.hpp"
 #include "iohelper.hpp"
 #include "Fridge.hpp"
+#include "climateEntry.h"
+#include "climateControl.h"
+
 
 // Prototypes
 
@@ -31,6 +34,8 @@ using std::string;
 int main()
 {
     //Creating menu strings
+
+
     int menuChoice = 0;
     int accountChoice;
     string userName;
@@ -53,9 +58,13 @@ int main()
                         "3. Add New Item to my SmileFridge\n"
                         "4. Remove Item from my SmileFridge\n"
                         "5. Update Quantity of an existing item\n"
-                        "6. Quit the SmileFridge app\n\n"
+                        "6. View SmileFridge Climate control\n"
+                        "7. Quit the SmileFridge app\n\n"
                         "Please enter your choice:";
-    
+    //Initialize climate object to access climate objects.
+    climateControl* cC;
+
+    cC = new climateControl;
 
     //Introducing the program and asking the user to log in or create account
     cout << welcomeMessage;
@@ -65,7 +74,7 @@ int main()
     userName = getNonEmptyString(enterNameString, nameError);
     userEmail = getNonEmptyNoSpacesString(enterEmailString, emailError);
     userPassword = getNonEmptyNoSpacesString(enterPasswordString, passwordError);
-    
+
 
     //Creating new User object
     User* newUser = new User(userName, userEmail, userPassword);;
@@ -84,11 +93,14 @@ int main()
     vector<FridgeItem*> contents = fridge->GetContents();
     vector<ItemInfo*> favorites = fridge->GetFavorites();
 
+//    climateControl cC;
+//    cC.climateMenu();
+
     //Menu loop for user to navigate the app
-    while (menuChoice != 6)
+    while (menuChoice != 7)
     {
         //Displaying menu and asking user what they would like to do
-        menuChoice = getInt(1, 6, menuString);
+        menuChoice = getInt(1, 7, menuString);
 
 
         //Case statement based on user's menu choice
@@ -123,7 +135,7 @@ int main()
                     cout << "None";
                 }
                 cout << " in the fridge." << endl << endl;
-            }        
+            }
             break;
         case 3: //Add New Item to user's SmileFridge
 
@@ -134,11 +146,16 @@ int main()
         case 5: //Update Quantity of an existing item
 
             break;
-        case 6: //Quit the SmileFridge app
+        case 6: //get Climate control info.
+
+            cC->climateMenu();
+
+            break;
+        case 7: //Quit the SmileFridge app
             cout << "\nThanks for using the SmileFridge app! Goodbye.";
         }
     }
-    
+
     //Deleting user dynamic memory
     delete newUser;
 
