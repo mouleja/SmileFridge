@@ -39,10 +39,9 @@ void Fridge::getInventoryFromCsv(string filename)
 		gf = std::stoi(goodForStr);
 
 		ItemInfo *item = _items.at(sku);	// This will throw an error if sku not in _items!!
+		Date ds(dy, dd);
 
-		_contents.push_back(
-			new FridgeItem(item, quant, dy, dd, gf)
-		);
+		_contents.push_back(new FridgeItem(item, quant, ds, gf));
 	}
 
 	inFile.close();
@@ -112,7 +111,10 @@ void Fridge::AddItem(string sku, int quantity) {
 	int place = this->GetIndexBySku(sku);
 	if (place < 0) {
 		ItemInfo* new_item = new ItemInfo(sku);
-		this->_contents.push_back(new FridgeItem(new_item, quantity, 1, 1, 30));
+		this->_contents.push_back(new FridgeItem(new_item, quantity, Date(1, 1), 9999));
 	}
-	this->_contents[place]->quantity += quantity;
+	else
+	{
+		this->_contents[place]->quantity += quantity;
+	}
 }
