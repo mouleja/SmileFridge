@@ -23,13 +23,11 @@
     <ClCompile Include="FridgeTestMain.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Items.cpp" />
-    <ClCompile Include="OrderList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Fridge.hpp" />
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="Items.hpp" />
-    <ClInclude Include="OrderList.hpp" />
     <ClInclude Include="User.hpp" />
   </ItemGroup>
   <ItemGroup>

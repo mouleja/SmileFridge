@@ -13,7 +13,6 @@ using std::endl;
 
 #include "User.hpp"
 #include "Items.hpp"
-//#include "Inventory.hpp"
 #include "Fridge.hpp"
 
 // Prototypes
