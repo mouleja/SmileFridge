@@ -36,6 +36,9 @@
     <ClInclude Include="User.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="accounts.csv" />
+    <None Include="climateLog.csv" />
+    <None Include="currentClimate.csv" />
     <None Include="inventory_list.csv" />
     <None Include="items_list.csv" />
     <None Include="README.md" />

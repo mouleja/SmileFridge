@@ -36,7 +36,7 @@ int main()
     //Creating menu strings
 
 
-    int menuChoice = 0;
+    int menuChoice = -1;
     int accountChoice;
     string userName;
     string userPassword;
@@ -59,7 +59,8 @@ int main()
                         "4. Remove Item from my SmileFridge\n"
                         "5. Update Quantity of an existing item\n"
                         "6. View SmileFridge Climate control\n"
-                        "7. Quit the SmileFridge app\n\n"
+                        "7. Update Order List and view\n"
+                        "0. Quit the SmileFridge app\n\n"
                         "Please enter your choice:";
     //Initialize climate object to access climate objects.
     climateControl* cC;
@@ -97,10 +98,10 @@ int main()
 //    cC.climateMenu();
 
     //Menu loop for user to navigate the app
-    while (menuChoice != 7)
+    while (menuChoice != 0)
     {
         //Displaying menu and asking user what they would like to do
-        menuChoice = getInt(1, 7, menuString);
+        menuChoice = getInt(0, 7, menuString);
 
 
         //Case statement based on user's menu choice
@@ -151,8 +152,16 @@ int main()
             cC->climateMenu();
 
             break;
-        case 7: //Quit the SmileFridge app
-            cout << "\nThanks for using the SmileFridge app! Goodbye.";
+        case 7: //Update orderList and print contents
+            fridge->orderLowItems();
+            fridge->printOrderList();
+            break;
+        case 0: //Quit the SmileFridge app
+            cout << "\nThanks for using the SmileFridge app! Goodbye." << endl;
+            break;
+        default: 
+            cout << "Invalid choice!  Try again." << endl << endl;
+            menuChoice = getInt(0, 7, menuString);
         }
     }
 

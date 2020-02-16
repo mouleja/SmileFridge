@@ -6,9 +6,6 @@ using std::vector;
 #include "Items.hpp"
 #include "User.hpp"
 
-#define USERNAME "Joseph Blow"
-#define EMAIL "joeb@low.com"
-#define ACCTNO "AFE87WE34FES"
 #define INVFILE "inventory_list.csv"
 
 struct FridgeItem
@@ -30,6 +27,8 @@ private:
 	User* _user;
 	map<string, ItemInfo*> _items;
 	vector<FridgeItem*> _contents;
+	map<string, int> groceryList;
+	map<string, int> orderList;
 	void getInventoryFromCsv(string sku);
 
 public:
@@ -50,4 +49,8 @@ public:
 	FridgeItem* GetInfoBySku(string sku);
 	vector<ItemInfo*> GetFavorites();
 	void AddItem(string sku, int quantity);
+	void orderLowItems();
+	void updateInventory();
+	void placeOrder();
+	void printOrderList();
 };

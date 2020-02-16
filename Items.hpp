@@ -13,11 +13,13 @@ struct ItemInfo {
     string fullName;
     string sku;
     int minQuantity;
+    int orderQuantity;
     bool favorite;
-	ItemInfo(string sku, string displayname, string fullname, int minQuantity, bool favorite)
-		: displayName(displayname), fullName(fullname), sku(sku), minQuantity(minQuantity), favorite(favorite) { }
+	ItemInfo(string sku, string displayname, string fullname, int minQuantity, int orderQuantity, bool favorite)
+		: displayName(displayname), fullName(fullname), sku(sku), minQuantity(minQuantity), 
+          orderQuantity(orderQuantity), favorite(favorite) { }
     ItemInfo(string sku)
-        : sku(sku), displayName("<NewItem>"), fullName("<NewItem>"), minQuantity(0), favorite(false) { }
+        : sku(sku), displayName("<NewItem>"), fullName("<NewItem>"), minQuantity(0), orderQuantity(1), favorite(false) { }
 };
 
 class Items
