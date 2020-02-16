@@ -59,3 +59,14 @@ void ppj_newline(string &result, int tabs)
         result += "\t";
     }
 }
+
+string GetOrderListJson(map<string, int> list)
+{
+    string result = "{\"order\": [";
+    for (std::map<string, int>::iterator it = list.begin(); it != list.end(); it++) {
+        result += "{\"" + it->first + "\": \"" + std::to_string(it->second) + "\"}, ";
+    }
+    result.erase(result.end() - 2, result.end());
+    result += "]}";
+    return result;
+}

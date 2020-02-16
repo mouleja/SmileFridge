@@ -19,14 +19,10 @@ using std::string;
 #include <fstream>
 #include <sstream>
 
-//#include "User.hpp"
-//#include "Items.hpp"
-//#include "Inventory.hpp"
 #include "iohelper.hpp"
 #include "Fridge.hpp"
 #include "climateEntry.h"
 #include "climateControl.h"
-
 
 // Prototypes
 

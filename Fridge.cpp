@@ -4,6 +4,8 @@
 #include <sstream>
 
 #include "Fridge.hpp"
+#include "JsonConverter.hpp"
+
 
 // 	FridgeItem(string displayName, string fullName, string sku, int minQuantity,
 //  bool favorite, int quantity, int dateYear, int dateDay, int goodFor) :
@@ -191,4 +193,6 @@ void Fridge::printOrderList() {
 		std::cout << orderItem->displayName << " | " << it->second 
 			<< " | " << (orderItem->orderQuantity * it->second) << std::endl;
 	}
+	string output = PrettyPrintJson(GetOrderListJson(orderList));
+	std::cout << output << std::endl;
 }
