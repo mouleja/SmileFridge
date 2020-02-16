@@ -5,6 +5,7 @@ using std::vector;
 
 #include "Items.hpp"
 #include "User.hpp"
+#include "DateConverter.hpp"
 
 #define INVFILE "inventory_list.csv"
 
@@ -12,12 +13,11 @@ struct FridgeItem
 {
 	ItemInfo *itemInfo;
 	int quantity;
-	int dateYear;
-	int dateDay;
+	Date dateStocked;
 	int goodFor;
 
-	FridgeItem(ItemInfo *itemInfo, int quantity, int dateYear, int dateDay, int goodFor) :
-		itemInfo(itemInfo), quantity(quantity), dateYear(dateYear), dateDay(dateDay), goodFor(goodFor) 
+	FridgeItem(ItemInfo *itemInfo, int quantity, Date dateStocked, int goodFor) :
+		itemInfo(itemInfo), quantity(quantity), dateStocked(dateStocked), goodFor(goodFor) 
 	{ }
 };
 

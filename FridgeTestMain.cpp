@@ -114,7 +114,7 @@ int main()
             {
                 ItemInfo* item = i->itemInfo;
                 cout << item->displayName << "| " << item->fullName << "| " << item->sku << "| ";
-                cout << i->dateDay << ", " << i->dateYear << "| " << i->quantity << "| " << i->goodFor;
+                cout << GetDateString(i->dateStocked) << "| " << i->quantity << "| " << i->goodFor;
                 if (item->favorite) cout << "| Favorite";
                 cout << endl;
             }
