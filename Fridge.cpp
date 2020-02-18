@@ -4,11 +4,22 @@
 #include <sstream>
 
 #include "Fridge.hpp"
-#include "JsonConverter.hpp"
+#include "Supplier.hpp"
 
 
 // 	FridgeItem(string displayName, string fullName, string sku, int minQuantity,
 //  bool favorite, int quantity, int dateYear, int dateDay, int goodFor) :
+
+Fridge::Fridge(User* user)
+{
+	_user = user;
+	_supplier = new Supplier();
+
+	_items = Items().GetAll();
+
+	_nextOrderNumber = getNextOrderNumber();
+	getInventoryFromCsv(INVFILE);
+}
 
 void Fridge::getInventoryFromCsv(string filename)
 {
@@ -193,6 +204,26 @@ void Fridge::printOrderList() {
 		std::cout << orderItem->displayName << " | " << it->second 
 			<< " | " << (orderItem->orderQuantity * it->second) << std::endl;
 	}
-	string output = PrettyPrintJson(GetOrderListJson(orderList));
+	string output = _supplier->PrettyPrintJson(_supplier->GetOrderListJson(orderList));
 	std::cout << output << std::endl;
+}
+
+void Fridge::SubmitOrder()
+{
+	_supplier->CreateOrder(_user, orderList, _nextOrderNumber);
+	std::cout << std::endl << "Order placed!" << std::endl << std::endl;
+	orderList.clear();	// Order placed and added to log
+	_nextOrderNumber++;
+}
+
+int Fridge::getNextOrderNumber()
+{
+	std::ifstream orderLog(ORDERLOG);
+	int count = 1;
+	if (!orderLog.bad())
+	{
+		string line;
+		while (getline(orderLog, line)) count++;
+	}
+	return count;
 }

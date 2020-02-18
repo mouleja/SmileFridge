@@ -151,6 +151,7 @@ int main()
         case 7: //Update orderList and print contents
             fridge->orderLowItems();
             fridge->printOrderList();
+            fridge->SubmitOrder();
             break;
         case 0: //Quit the SmileFridge app
             cout << "\nThanks for using the SmileFridge app! Goodbye." << endl;

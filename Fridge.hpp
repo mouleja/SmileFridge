@@ -8,6 +8,7 @@ using std::vector;
 #include "DateConverter.hpp"
 
 #define INVFILE "inventory_list.csv"
+#define ORDERLOG "order_log.csv"
 
 struct FridgeItem
 {
@@ -21,24 +22,23 @@ struct FridgeItem
 	{ }
 };
 
+class Supplier;	// Forward declaration
+
 class Fridge
 {
 private:
 	User* _user;
+	Supplier* _supplier;
 	map<string, ItemInfo*> _items;
 	vector<FridgeItem*> _contents;
 	map<string, int> groceryList;
 	map<string, int> orderList;
+	int _nextOrderNumber;
 	void getInventoryFromCsv(string sku);
+	int getNextOrderNumber();
 
 public:
-	Fridge(User *user)
-	{
-		_user = user;
-
-		_items = Items().GetAll();
-		getInventoryFromCsv(INVFILE);
-	} 
+	Fridge(User* user);
 
 	User* GetUser() { return _user; }
 	vector<FridgeItem*> GetContents() { return _contents; }
@@ -53,4 +53,5 @@ public:
 	void updateInventory();
 	void placeOrder();
 	void printOrderList();
+	void SubmitOrder();
 };

@@ -26,7 +26,7 @@
     <ClCompile Include="FridgeTestMain.cpp" />
     <ClCompile Include="iohelper.cpp" />
     <ClCompile Include="Items.cpp" />
-    <ClCompile Include="JsonConverter.cpp" />
+    <ClCompile Include="Supplier.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,7 +36,7 @@
     <ClInclude Include="Fridge.hpp" />
     <ClInclude Include="iohelper.hpp" />
     <ClInclude Include="Items.hpp" />
-    <ClInclude Include="JsonConverter.hpp" />
+    <ClInclude Include="Supplier.hpp" />
     <ClInclude Include="User.hpp" />
   </ItemGroup>
   <ItemGroup>

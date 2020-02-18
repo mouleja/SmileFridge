@@ -1,6 +1,9 @@
-#include "JsonConverter.hpp"
+#include "Supplier.hpp"
+#include "Fridge.hpp"
+#include <fstream>
 
-string GetFridgeJson(vector<FridgeItem*> items, string listName)
+
+string Supplier::GetFridgeJson(vector<FridgeItem*> items, string listName)
 {
     string result = "{\"" + listName + "\": [";
     for (FridgeItem* i : items)
@@ -13,7 +16,7 @@ string GetFridgeJson(vector<FridgeItem*> items, string listName)
     return result;
 }
 
-string PrettyPrintJson(string json)
+string Supplier::PrettyPrintJson(string json)
 {
     string result = "";
     int tabs = 0;
@@ -51,7 +54,7 @@ string PrettyPrintJson(string json)
     return result;
 }
 
-void ppj_newline(string &result, int tabs)
+void Supplier::ppj_newline(string &result, int tabs)
 {
     result += '\n';
     for (int j = 0; j < tabs; ++j)
@@ -60,7 +63,12 @@ void ppj_newline(string &result, int tabs)
     }
 }
 
-string GetOrderListJson(map<string, int> list)
+void Supplier::addToOrderLog(string listJson)
+{
+
+}
+
+string Supplier::GetOrderListJson(map<string, int> list)
 {
     string result = "{\"order\": [";
     for (std::map<string, int>::iterator it = list.begin(); it != list.end(); it++) {
@@ -69,4 +77,21 @@ string GetOrderListJson(map<string, int> list)
     result.erase(result.end() - 2, result.end());
     result += "]}";
     return result;
+}
+
+void Supplier::CreateOrder(User* user, map<string, int> orderList, int orderNumber)
+{
+    // NOTE: at some point an API token will need to replace sending clear text account info
+    string orderJson = "{{\"account\": ";
+    string userJson = "{\"Number\": \"" + std::to_string(user->GetAccount()) + "\", \"Email\": \"" +
+        user->GetEmail() + "\", \"Password\": \"" + user->GetPassword() + "\"}";
+    string listJson = GetOrderListJson(orderList);
+    orderJson += userJson + ", " + listJson + "}";
+
+    // TODO: network code to send orderJson to Amazon (There is no _public_ API for this.)
+
+    // Add order to order log file
+    std::ofstream logFile(ORDERLOG, std::ofstream::app);
+    logFile << orderNumber << "," << GetDateString(GetCurrentDate()) << "," << listJson << std::endl;
+    logFile.close();
 }

@@ -39,7 +39,7 @@
     <ClCompile Include="DateConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JsonConverter.cpp">
+    <ClCompile Include="Supplier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,7 +65,7 @@
     <ClInclude Include="DateConverter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="JsonConverter.hpp">
+    <ClInclude Include="Supplier.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
