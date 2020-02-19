@@ -18,6 +18,7 @@ using std::string;
 #include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 
 #include "iohelper.hpp"
 #include "Fridge.hpp"
@@ -29,12 +30,13 @@ using std::string;
 // Main
 int main()
 {
+    srand((unsigned int)time(NULL));
     //Creating menu strings
 
 
     int menuChoice = -1;
     int accountChoice;
-    string userName;
+    string userName, orderJson;
     string userPassword;
     string userEmail;
     string welcomeMessage = "Welcome to the SmileFridge app!!!\n\n";
@@ -56,6 +58,7 @@ int main()
                         "5. Update Quantity of an existing item\n"
                         "6. View SmileFridge Climate control\n"
                         "7. Update Order List and view\n"
+                        "8. Receive a shipped order\n"
                         "0. Quit the SmileFridge app\n\n"
                         "Please enter your choice:";
     //Initialize climate object to access climate objects.
@@ -97,7 +100,7 @@ int main()
     while (menuChoice != 0)
     {
         //Displaying menu and asking user what they would like to do
-        menuChoice = getInt(0, 7, menuString);
+        menuChoice = getInt(0, 8, menuString);
 
 
         //Case statement based on user's menu choice
@@ -110,7 +113,7 @@ int main()
             {
                 ItemInfo* item = i->itemInfo;
                 cout << item->displayName << "| " << item->fullName << "| " << item->sku << "| ";
-                cout << GetDateString(i->dateStocked) << "| " << i->quantity << "| " << i->goodFor;
+                cout << GetDateString(i->dateStocked) << "| " << i->quantity;
                 if (item->favorite) cout << "| Favorite";
                 cout << endl;
             }
@@ -152,6 +155,11 @@ int main()
             fridge->orderLowItems();
             fridge->printOrderList();
             fridge->SubmitOrder();
+            break;
+        case 8:
+            printString();
+            orderJson = getString("Enter order filename: ");
+            fridge->ReceiveOrder(orderJson);
             break;
         case 0: //Quit the SmileFridge app
             cout << "\nThanks for using the SmileFridge app! Goodbye." << endl;

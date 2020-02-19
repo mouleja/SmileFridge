@@ -30,3 +30,6 @@ string GetDateString(Date date);
 
 // Get the ints from a Date (pass ints y and d by reference)
 void GetDateInts(Date date, int* y, int* d);
+
+// Return Date object from string in format of "MM/DD/YYYY"
+Date GetDateFromString(string dateStr);

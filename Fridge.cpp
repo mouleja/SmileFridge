@@ -17,7 +17,6 @@ Fridge::Fridge(User* user)
 
 	_items = Items().GetAll();
 
-	_nextOrderNumber = getNextOrderNumber();
 	getInventoryFromCsv(INVFILE);
 }
 
@@ -33,8 +32,8 @@ void Fridge::getInventoryFromCsv(string filename)
 		exit(1);
 	}
 
-	string line, sku, dateYearStr, dateDayStr, quantStr, goodForStr;
-	int dy, dd, quant, gf;
+	string line, sku, dateYearStr, dateDayStr, quantStr;
+	int dy, dd, quant;
 
 	while (getline(inFile, line))	// Get line from file
 	{
@@ -44,17 +43,15 @@ void Fridge::getInventoryFromCsv(string filename)
 		getline(ss, quantStr, ',');
 		getline(ss, dateYearStr, ',');
 		getline(ss, dateDayStr, ',');
-		getline(ss, goodForStr, ',');
 
 		dy = std::stoi(dateYearStr);
 		dd = std::stoi(dateDayStr);
 		quant = std::stoi(quantStr);
-		gf = std::stoi(goodForStr);
 
 		ItemInfo *item = _items.at(sku);	// This will throw an error if sku not in _items!!
 		Date ds(dy, dd);
 
-		_contents.push_back(new FridgeItem(item, quant, ds, gf));
+		_contents.push_back(new FridgeItem(item, quant, ds));
 	}
 
 	inFile.close();
@@ -124,7 +121,7 @@ void Fridge::AddItem(string sku, int quantity) {
 	int place = this->GetIndexBySku(sku);
 	if (place < 0) {
 		ItemInfo* new_item = new ItemInfo(sku);
-		this->_contents.push_back(new FridgeItem(new_item, quantity, Date(1, 1), 9999));
+		this->_contents.push_back(new FridgeItem(new_item, quantity, Date(1, 1)));
 	}
 	else
 	{
@@ -176,7 +173,7 @@ void Fridge::updateInventory() {
 	for (FridgeItem* fridgeItem : _contents) {
 		ItemInfo* item = fridgeItem->itemInfo;
 		outFile << item->sku << "," << fridgeItem->quantity << "," << fridgeItem->dateStocked.Year << ","
-		<< fridgeItem->dateStocked.Days	<< "," << fridgeItem->goodFor << std::endl;
+		<< fridgeItem->dateStocked.Days << std::endl;
 	}
 	outFile.close();
 }
@@ -186,7 +183,7 @@ void Fridge::placeOrder() {
 		int index = GetIndexBySku(it->first);
 		if (index == -1) {
 			/*Hardcoded fridge data temporarily: in actual application get it from Date Time function when order is received*/
-			FridgeItem* newItem = new FridgeItem(_items[it->first], it->second, GetCurrentDate(), 90);
+			FridgeItem* newItem = new FridgeItem(_items[it->first], it->second, GetCurrentDate());
 			_contents.push_back(newItem);
 		}
 		else {
@@ -210,20 +207,24 @@ void Fridge::printOrderList() {
 
 void Fridge::SubmitOrder()
 {
-	_supplier->CreateOrder(_user, orderList, _nextOrderNumber);
+	_supplier->CreateOrder(_user, orderList);
 	std::cout << std::endl << "Order placed!" << std::endl << std::endl;
 	orderList.clear();	// Order placed and added to log
-	_nextOrderNumber++;
 }
 
-int Fridge::getNextOrderNumber()
+void Fridge::ReceiveOrder(string orderJson)
 {
-	std::ifstream orderLog(ORDERLOG);
-	int count = 1;
-	if (!orderLog.bad())
+	vector<FridgeItem*> receivedItems = _supplier->ProcessReceivedOrder(orderJson);
+}
+
+ItemInfo* Fridge::GetItemInfoBySku(string sku)
+{
+	if (_items.find(sku) != _items.end())
 	{
-		string line;
-		while (getline(orderLog, line)) count++;
+		return _items[sku];
 	}
-	return count;
+	else
+	{
+		return nullptr;
+	}
 }

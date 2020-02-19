@@ -126,3 +126,9 @@ void GetDateInts(Date date, int* y, int* d)
     *y = date.Year;
     *d = date.Days;
 }
+
+Date GetDateFromString(string dateStr)
+{
+    return MakeDate(std::stoi(dateStr.substr(0, 2)), 
+        std::stoi(dateStr.substr(3,2)), std::stoi(dateStr.substr(6, 4)));
+}

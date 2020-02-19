@@ -344,3 +344,5 @@ healthchecksdb
 /1000001.csv
 /accounts.csv
 /iteration1.zip
+*.json
+/received_log.csv

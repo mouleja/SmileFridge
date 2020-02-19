@@ -9,16 +9,16 @@ using std::vector;
 
 #define INVFILE "inventory_list.csv"
 #define ORDERLOG "order_log.csv"
+#define RECVLOG "received_log.csv"
 
 struct FridgeItem
 {
 	ItemInfo *itemInfo;
 	int quantity;
 	Date dateStocked;
-	int goodFor;
 
-	FridgeItem(ItemInfo *itemInfo, int quantity, Date dateStocked, int goodFor) :
-		itemInfo(itemInfo), quantity(quantity), dateStocked(dateStocked), goodFor(goodFor) 
+	FridgeItem(ItemInfo *itemInfo, int quantity, Date dateStocked) :
+		itemInfo(itemInfo), quantity(quantity), dateStocked(dateStocked)
 	{ }
 };
 
@@ -33,9 +33,7 @@ private:
 	vector<FridgeItem*> _contents;
 	map<string, int> groceryList;
 	map<string, int> orderList;
-	int _nextOrderNumber;
 	void getInventoryFromCsv(string sku);
-	int getNextOrderNumber();
 
 public:
 	Fridge(User* user);
@@ -54,4 +52,6 @@ public:
 	void placeOrder();
 	void printOrderList();
 	void SubmitOrder();
+	void ReceiveOrder(string orderJson);
+	ItemInfo* GetItemInfoBySku(string sku);
 };

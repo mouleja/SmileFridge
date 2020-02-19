@@ -35,5 +35,7 @@ public:
     bool isFavorite(string sku);
     void SetMinQuantity(string sku, int amount);
     void SetFavorite(string sku, bool fav = true);
+    ItemInfo* GetItemInfoBySku(string sku);
+    ItemInfo* CreateNewItem(string sku);
 };
 
