@@ -3,6 +3,8 @@
 #include <sstream>
 #include <iostream>
 #include <iterator>
+#include <algorithm>
+#include "iohelper.hpp"
 
 Items::Items()
 {
@@ -12,18 +14,6 @@ Items::Items()
 bool Items::isFavorite(string sku)
 {
 	return (_items[sku]->favorite == true);
-}
-
-std::vector<string> Items::GetFavoriteSkus()
-{
-	std::vector<string> skus;
-	map<string, ItemInfo*>::iterator it = _items.begin();
-
-	while (it != _items.end())
-	{
-		if ((it->second)->favorite) skus.push_back(it->first);
-	}
-	return skus;
 }
 
 // Change minQuanity for an item (by sku)
@@ -56,7 +46,7 @@ void Items::getItemsFromCsv(string filename)
 		return;
 	}
 
-	string line, displayname, fullname, sku, mqStr, oqStr, favStr;
+	string line, displayname, fullname, sku, quantStr, mqStr, oqStr, favStr;
 	int mq, oq;
 	bool fav;
 
@@ -83,10 +73,51 @@ void Items::getItemsFromCsv(string filename)
 			fav = false;
 		}
 
-		ItemInfo* current = new ItemInfo(displayname, fullname, sku, mq, oq, fav);
+		ItemInfo* current = new ItemInfo(sku, displayname, fullname, mq, oq, fav);
 		_items.insert({ sku, current });	// Create {sku, itemInfo*} pair & add to map
 	}
 
 	inFile.close();
 }
 
+ItemInfo* Items::GetItemInfoBySku(string sku)
+{
+	if (_items.find(sku) != _items.end())
+	{
+		return _items[sku];
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+ItemInfo* Items::CreateNewItem(string sku)
+{
+	string shortName, fullName;
+	int minQ, orderQ, favChar;
+
+	std::cout << std::endl << "Item with Sku # " << sku
+		<< " not in database.  Please enter the item information:" << std::endl;
+	shortName = getString("Display (short) name of item: ");
+	fullName = getString("Full name of item: ");
+	replace(shortName.begin(), shortName.end(), ',', '_');	// No commas in names b/c csv
+	replace(fullName.begin(), fullName.end(), ',', '_');
+
+	minQ = getInt(0, 999, "Minimum amount to keep on hand (0 for occasional only items): ");
+	orderQ = getInt(0, 1000, "Order quantity (Amount of item in each box): ");
+	char yesNo[2] = { 'y', 'n' };
+	favChar = getChar("Mark as favorite item? (y for yes, n for no)", yesNo, 2);
+	bool fav = (favChar == 'y') ? true : false;
+	printString();
+
+	ItemInfo* newItem = new ItemInfo(sku, shortName, fullName, minQ, orderQ, fav);
+	_items[sku] = newItem;
+
+	std::ofstream outfile(ITEMSFILE, std::ios::app);
+	outfile << shortName << ',' << fullName << ',' << sku << ',' << minQ << ',' << orderQ 
+		<< ',' << (fav ? "true" : "false") << std::endl;
+	outfile.close();
+
+	return newItem;
+}

@@ -19,20 +19,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="climateControl.cpp" />
+    <ClCompile Include="climateEntry.cpp" />
+    <ClCompile Include="DateConverter.cpp" />
     <ClCompile Include="Fridge.cpp" />
     <ClCompile Include="FridgeTestMain.cpp" />
-    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="iohelper.cpp" />
     <ClCompile Include="Items.cpp" />
+    <ClCompile Include="Supplier.cpp" />
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="climateControl.h" />
+    <ClInclude Include="climateEntry.h" />
+    <ClInclude Include="DateConverter.hpp" />
     <ClInclude Include="Fridge.hpp" />
-    <ClInclude Include="Inventory.hpp" />
+    <ClInclude Include="iohelper.hpp" />
     <ClInclude Include="Items.hpp" />
+    <ClInclude Include="Supplier.hpp" />
     <ClInclude Include="User.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="accounts.csv" />
+    <None Include="climateLog.csv" />
+    <None Include="currentClimate.csv" />
     <None Include="inventory_list.csv" />
     <None Include="items_list.csv" />
+    <None Include="README.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
