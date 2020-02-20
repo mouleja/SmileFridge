@@ -122,8 +122,12 @@ void Fridge::AddItem(string sku, int quantity, int quantOnOrder) {
 	//Will return -1 if item was not found
 	int place = this->GetIndexBySku(sku);
 	if (place < 0) {
-		ItemInfo* new_item = new ItemInfo(sku);
-		this->_contents.push_back(new FridgeItem(new_item, quantity, quantOnOrder, Date(1, 1)));
+		ItemInfo* new_item = GetItemInfoBySku(sku);
+		if (new_item == nullptr)
+		{
+			new_item = Items().CreateNewItem(sku);
+		}
+		this->_contents.push_back(new FridgeItem(new_item, quantity, quantOnOrder, GetCurrentDate()));
 	}
 	else
 	{
@@ -181,6 +185,12 @@ void Fridge::updateInventory() {
 }
 
 void Fridge::printOrderList() {
+	if (orderList.size() == 0)
+	{
+		std::cout << "You are not low on any items at this time." << std::endl;
+		return;
+	}
+
 	std::cout << "Item name | Order Units | Quantity Ordered" << std::endl << std::endl;
 	for (std::map<string, int>::iterator it = orderList.begin(); it != orderList.end(); it++) {
 		ItemInfo* orderItem = _items.at(it->first);
