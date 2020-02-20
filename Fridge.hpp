@@ -15,10 +15,11 @@ struct FridgeItem
 {
 	ItemInfo *itemInfo;
 	int quantity;
+	int quantOnOrder;
 	Date dateStocked;
 
-	FridgeItem(ItemInfo *itemInfo, int quantity, Date dateStocked) :
-		itemInfo(itemInfo), quantity(quantity), dateStocked(dateStocked)
+	FridgeItem(ItemInfo *itemInfo, int quantity, int qoo, Date dateStocked) :
+		itemInfo(itemInfo), quantity(quantity), quantOnOrder(qoo), dateStocked(dateStocked)
 	{ }
 };
 
@@ -46,10 +47,9 @@ public:
 	int GetIndexBySku(string sku);
 	FridgeItem* GetInfoBySku(string sku);
 	vector<ItemInfo*> GetFavorites();
-	void AddItem(string sku, int quantity);
+	void AddItem(string sku, int quantity, int quantOnOrder=0);
 	void orderLowItems();
 	void updateInventory();
-	void placeOrder();
 	void printOrderList();
 	void SubmitOrder();
 	void ReceiveOrder(string orderJson);

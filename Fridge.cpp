@@ -32,8 +32,8 @@ void Fridge::getInventoryFromCsv(string filename)
 		exit(1);
 	}
 
-	string line, sku, dateYearStr, dateDayStr, quantStr;
-	int dy, dd, quant;
+	string line, sku, dateYearStr, dateDayStr, quantStr, qooStr;
+	int dy, dd, quant, qoo;
 
 	while (getline(inFile, line))	// Get line from file
 	{
@@ -41,17 +41,19 @@ void Fridge::getInventoryFromCsv(string filename)
 
 		getline(ss, sku, ',');
 		getline(ss, quantStr, ',');
+		getline(ss, qooStr, ',');
 		getline(ss, dateYearStr, ',');
 		getline(ss, dateDayStr, ',');
 
 		dy = std::stoi(dateYearStr);
 		dd = std::stoi(dateDayStr);
 		quant = std::stoi(quantStr);
+		qoo = std::stoi(qooStr);
 
 		ItemInfo *item = _items.at(sku);	// This will throw an error if sku not in _items!!
 		Date ds(dy, dd);
 
-		_contents.push_back(new FridgeItem(item, quant, ds));
+		_contents.push_back(new FridgeItem(item, quant, qoo, ds));
 	}
 
 	inFile.close();
@@ -64,7 +66,7 @@ void Fridge::Use(string sku, int amount)
 	if (item)
 	{
 		item->quantity -= amount;
-		if (item->quantity < 1)
+		if (item->quantity < 1 && item->quantOnOrder < 1)
 		{
 			int index = GetIndexBySku(sku);
 			_contents.erase(_contents.begin() + index);
@@ -116,12 +118,12 @@ vector<ItemInfo*> Fridge::GetFavorites()
 //Adds an item to the list of contents. Runs the "CreateNewItem" function
 //if the item is not in contents already. Needs to be adjusted to track
 //items that are already known but not in contents
-void Fridge::AddItem(string sku, int quantity) {
+void Fridge::AddItem(string sku, int quantity, int quantOnOrder) {
 	//Will return -1 if item was not found
 	int place = this->GetIndexBySku(sku);
 	if (place < 0) {
 		ItemInfo* new_item = new ItemInfo(sku);
-		this->_contents.push_back(new FridgeItem(new_item, quantity, Date(1, 1)));
+		this->_contents.push_back(new FridgeItem(new_item, quantity, quantOnOrder, Date(1, 1)));
 	}
 	else
 	{
@@ -152,9 +154,9 @@ void Fridge::orderLowItems() {
 			}//end if
 
 			//if the fridge has a current quantity for the item and it's below minQuantity
-			else if (_contents[index]->quantity < it->second->minQuantity) {
+			else if ((_contents[index]->quantity+_contents[index]->quantOnOrder) < it->second->minQuantity) {
 				int orderMultiple = 1;
-				int currentQuantity = _contents[index]->quantity + it->second->orderQuantity;
+				int currentQuantity = (_contents[index]->quantity + _contents[index]->quantOnOrder) + it->second->orderQuantity;
 				while (currentQuantity < it->second->minQuantity) {
 					currentQuantity += it->second->orderQuantity;
 					orderMultiple++;
@@ -172,26 +174,10 @@ void Fridge::updateInventory() {
 	std::ofstream outFile(INVFILE, std::ios::trunc);
 	for (FridgeItem* fridgeItem : _contents) {
 		ItemInfo* item = fridgeItem->itemInfo;
-		outFile << item->sku << "," << fridgeItem->quantity << "," << fridgeItem->dateStocked.Year << ","
-		<< fridgeItem->dateStocked.Days << std::endl;
+		outFile << item->sku << "," << fridgeItem->quantity << "," << fridgeItem->quantOnOrder << ',' 
+				<< fridgeItem->dateStocked.Year << "," << fridgeItem->dateStocked.Days << std::endl;
 	}
 	outFile.close();
-}
-
-void Fridge::placeOrder() {
-	for (std::map<string, int>::iterator it = orderList.begin(); it != orderList.end(); it++) {
-		int index = GetIndexBySku(it->first);
-		if (index == -1) {
-			/*Hardcoded fridge data temporarily: in actual application get it from Date Time function when order is received*/
-			FridgeItem* newItem = new FridgeItem(_items[it->first], it->second, GetCurrentDate());
-			_contents.push_back(newItem);
-		}
-		else {
-			FridgeItem* updateItem = _contents[GetIndexBySku(it->first)];
-			updateItem->quantity += (it->second * updateItem->itemInfo->orderQuantity);
-		}
-	}
-	orderList.clear();
 }
 
 void Fridge::printOrderList() {
@@ -207,14 +193,33 @@ void Fridge::printOrderList() {
 
 void Fridge::SubmitOrder()
 {
+	//don't submit an order if the orderList is empty
+	if (orderList.empty()) return;
+
 	_supplier->CreateOrder(_user, orderList);
-	std::cout << std::endl << "Order placed!" << std::endl << std::endl;
+	std::cout << std::endl << "Order placed!" << std::endl;
+	//loops through order items and finds matching items in fridge contents to update their 'quantOnOrder' field
+	//or if ordered item is not in fridge contents, it is added with a quantity of 0 and appropriate 'quantOnOrder' value
+	for (std::map<string, int>::iterator it = orderList.begin(); it != orderList.end(); it++) {
+		if (GetIndexBySku(it->first) != -1)
+			GetInfoBySku(it->first)->quantOnOrder = it->second * GetItemInfoBySku(it->first)->orderQuantity;
+		else
+			AddItem(it->first, 0, it->second * GetItemInfoBySku(it->first)->orderQuantity);
+	}
+	updateInventory();
+	std::cout << "Current fridge items 'On-Order Quantity' successfully updated" << std::endl << std::endl;
 	orderList.clear();	// Order placed and added to log
 }
 
 void Fridge::ReceiveOrder(string orderJson)
 {
 	vector<FridgeItem*> receivedItems = _supplier->ProcessReceivedOrder(orderJson);
+	for (FridgeItem* recvdItem : receivedItems) {
+		FridgeItem* currFridgeItem = GetInfoBySku(recvdItem->itemInfo->sku);
+		currFridgeItem->quantity += recvdItem->quantity;
+		currFridgeItem->quantOnOrder -= recvdItem->quantity;
+	}
+	updateInventory();
 }
 
 ItemInfo* Fridge::GetItemInfoBySku(string sku)
