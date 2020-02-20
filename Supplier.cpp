@@ -178,7 +178,7 @@ vector<FridgeItem*> Supplier::ProcessReceivedOrder(string orderJson)
         {
             itemInfo = Items().CreateNewItem(sku);  // Creates new item from prompts & saves it
         }
-        items.push_back(new FridgeItem(itemInfo, std::stoi(quant), GetDateFromString(date)));
+        items.push_back(new FridgeItem(itemInfo, std::stoi(quant)*itemInfo->orderQuantity, GetDateFromString(date)));
     }
 
     return items;
