@@ -340,3 +340,5 @@ ASALocalRun/
 healthchecksdb
 /GroceryList.cpp
 /GroceryList.hpp
+*.json
+/received_log.csv
