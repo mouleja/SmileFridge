@@ -113,7 +113,7 @@ int main()
             {
                 ItemInfo* item = i->itemInfo;
                 cout << item->displayName << "| " << item->fullName << "| " << item->sku << "| ";
-                cout << GetDateString(i->dateStocked) << "| " << i->quantity;
+				cout << GetDateString(i->dateStocked) << "| " << i->quantity << "| " << i->quantOnOrder;
                 if (item->favorite) cout << "| Favorite";
                 cout << endl;
             }
@@ -155,11 +155,13 @@ int main()
             fridge->orderLowItems();
             fridge->printOrderList();
             fridge->SubmitOrder();
+			contents = fridge->GetContents(); //update vector associated with fridge contents
             break;
         case 8:
             printString();
             orderJson = getString("Enter order filename: ");
             fridge->ReceiveOrder(orderJson);
+			contents = fridge->GetContents(); //update vector associated with fridge contents
             break;
         case 0: //Quit the SmileFridge app
             cout << "\nThanks for using the SmileFridge app! Goodbye." << endl;
