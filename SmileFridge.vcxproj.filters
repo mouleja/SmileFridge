@@ -18,7 +18,10 @@
     <ClCompile Include="FridgeTestMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Inventory.cpp">
+    <ClCompile Include="iohelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Fridge.cpp">
@@ -27,10 +30,16 @@
     <ClCompile Include="Items.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GroceryList.cpp">
+    <ClCompile Include="climateControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrderList.cpp">
+    <ClCompile Include="climateEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DateConverter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Supplier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,7 +47,7 @@
     <ClInclude Include="User.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Inventory.hpp">
+    <ClInclude Include="iohelper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Fridge.hpp">
@@ -47,15 +56,25 @@
     <ClInclude Include="Items.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GroceryList.hpp">
+    <ClInclude Include="climateControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrderList.hpp">
+    <ClInclude Include="climateEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DateConverter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Supplier.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="inventory_list.csv" />
     <None Include="items_list.csv" />
+    <None Include="inventory_list.csv" />
+    <None Include="README.md" />
+    <None Include="climateLog.csv" />
+    <None Include="currentClimate.csv" />
+    <None Include="accounts.csv" />
   </ItemGroup>
 </Project>

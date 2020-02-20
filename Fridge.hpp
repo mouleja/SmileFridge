@@ -5,44 +5,38 @@ using std::vector;
 
 #include "Items.hpp"
 #include "User.hpp"
-#include "GroceryList.hpp"
-#include "OrderList.hpp"
+#include "DateConverter.hpp"
 
-#define USERNAME "Joseph Blow"
-#define EMAIL "joeb@low.com"
-#define ACCTNO "AFE87WE34FES"
 #define INVFILE "inventory_list.csv"
+#define ORDERLOG "order_log.csv"
+#define RECVLOG "received_log.csv"
 
 struct FridgeItem
 {
 	ItemInfo *itemInfo;
 	int quantity;
-	int dateYear;
-	int dateDay;
-	int goodFor;
+	Date dateStocked;
 
-	FridgeItem(ItemInfo *itemInfo, int quantity, int dateYear, int dateDay, int goodFor) :
-		itemInfo(itemInfo), quantity(quantity), dateYear(dateYear), dateDay(dateDay), goodFor(goodFor) 
+	FridgeItem(ItemInfo *itemInfo, int quantity, Date dateStocked) :
+		itemInfo(itemInfo), quantity(quantity), dateStocked(dateStocked)
 	{ }
 };
+
+class Supplier;	// Forward declaration
 
 class Fridge
 {
 private:
 	User* _user;
+	Supplier* _supplier;
 	map<string, ItemInfo*> _items;
 	vector<FridgeItem*> _contents;
 	map<string, int> groceryList;
 	map<string, int> orderList;
-	void getInventoryFromCsv(string filename);
+	void getInventoryFromCsv(string sku);
 
 public:
-	Fridge()
-	{
-		_user = new User(USERNAME, EMAIL, ACCTNO);
-		_items = Items().GetAll();
-		getInventoryFromCsv(INVFILE);
-	} 
+	Fridge(User* user);
 
 	User* GetUser() { return _user; }
 	vector<FridgeItem*> GetContents() { return _contents; }
@@ -50,8 +44,14 @@ public:
 	bool isFavorite(string sku) { return _items.at(sku)->favorite; }
 	void Use(string sku, int amount = 1);
 	int GetIndexBySku(string sku);
+	FridgeItem* GetInfoBySku(string sku);
+	vector<ItemInfo*> GetFavorites();
+	void AddItem(string sku, int quantity);
 	void orderLowItems();
 	void updateInventory();
 	void placeOrder();
 	void printOrderList();
+	void SubmitOrder();
+	void ReceiveOrder(string orderJson);
+	ItemInfo* GetItemInfoBySku(string sku);
 };
