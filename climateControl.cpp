@@ -10,7 +10,7 @@ climateControl::climateControl()
 
     if(checkCsv.good())
     {
-        cout << "Previous Data Found!" << endl;
+        //cout << "Previous Data Found!" << endl;
     }
     else
     {

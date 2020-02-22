@@ -17,6 +17,5 @@ public:
 	long int GetAccount() const { return _account; }
 	string GetPassword() const { return _password; } //A bad idea in practice, could implement a hash table later to encrypt?
 	void SetAccount(int newAccountNumber) { _account = newAccountNumber; }
-	void findAccountNumber();
 	void createAccount();
 };

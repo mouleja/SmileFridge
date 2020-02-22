@@ -29,15 +29,16 @@ using std::string;
 
 
 // Prototypes
+long int findAccountNumber(string userName, string userEmail, string userPassword);
 
 // Main
 int main()
 {
     //Creating menu strings
 
-
     int menuChoice = 0;
     int accountChoice;
+    long int accountNumber = -1;
     string userName;
     string userPassword;
     string userEmail;
@@ -52,6 +53,12 @@ int main()
     string emailError = "Your email cannot be blank or contain spaces and must be in the form email@something.com. Please try again:";
     string enterPasswordString = "Please enter a password:";
     string passwordError = "Your password cannot be blank or contain spaces. Please try again:";
+    string existingAccountError = "An account with that username already exists, please choose another";
+    string noAccountError = "No account matches those credentials, please try again";
+    string duplicateAccountError = "That account already exists, please choose new credentials";
+    string duplicateEmailError = "That email is already linked to an account, please try again";
+    string loginSuccess = "\nYou have been logged in successfully!";
+    string accountCreationSuccess = "\nYou account has been successfully created!";
     string menuString = "\n\nWhat would you like to do?\n"
                         "1. Show SmileFridge contents\n"
                         "2. Show My Favorites\n"
@@ -61,6 +68,7 @@ int main()
                         "6. View SmileFridge Climate control\n"
                         "7. Quit the SmileFridge app\n\n"
                         "Please enter your choice:";
+
     //Initialize climate object to access climate objects.
     climateControl* cC;
 
@@ -69,38 +77,98 @@ int main()
     //Introducing the program and asking the user to log in or create account
     cout << welcomeMessage;
     accountChoice = getInt(1, 2, accountString);
+    bool foundAccount = false;
 
-    //Asking user for log in information or account creation information
-    userName = getNonEmptyString(enterNameString, nameError);
-    userEmail = getNonEmptyNoSpacesString(enterEmailString, emailError);
-    userPassword = getNonEmptyNoSpacesString(enterPasswordString, passwordError);
+
+    /***Next section should probably be moved to User class...***/
+
+    //Asking user to log in or create account
+    if (accountChoice == 1)
+    {
+        while (!foundAccount)
+        {
+            //Asking user for log in information
+            userName = getNonEmptyString(enterNameString, nameError);
+            userEmail = getNonEmptyNoSpacesString(enterEmailString, emailError);
+            userPassword = getNonEmptyNoSpacesString(enterPasswordString, passwordError);
+            accountNumber = findAccountNumber(userName, userEmail, userPassword);
+
+            //Checking to see if account was found. If not, re-prompting user for credentials
+            if (accountNumber > 0)
+            {
+                foundAccount = true;
+                system("CLS");
+                cout << loginSuccess << flush;
+            }
+            else
+            {
+                cout << noAccountError << endl;
+            }
+        }
+    }
+    else
+    {
+        foundAccount = true;
+        while (foundAccount)
+        {
+            //Asking user for account creation information
+            userName = getNonEmptyString(enterNameString, nameError);
+            userEmail = getNonEmptyNoSpacesString(enterEmailString, emailError);
+            userPassword = getNonEmptyNoSpacesString(enterPasswordString, passwordError);
+            accountNumber = findAccountNumber(userName, userEmail, userPassword);
+
+            //Checking to see if account was found. If so, re-prompting user for credentials
+            if (accountNumber > 0)
+            {
+                cout << duplicateAccountError << endl;
+            }
+            else if (accountNumber == 0)
+            {
+                cout << duplicateEmailError << endl;
+            }
+            else
+            {
+                foundAccount = false;
+                system("CLS");
+                cout << accountCreationSuccess << flush;
+            }
+        }
+        
+    }
 
 
     //Creating new User object
-    User* newUser = new User(userName, userEmail, userPassword);;
+    User* newUser = new User(userName, userEmail, userPassword);
 
+
+    //Setting account number or create new account
     if (accountChoice == 1)
     {
-        newUser->findAccountNumber();
+        newUser->SetAccount(accountNumber);
     }
     else
     {
         newUser->createAccount();
     }
 
+
+
+    //Creating Fridge objects and populating with user's inventory
     Fridge* fridge = new Fridge(newUser);
     map<string, ItemInfo*> items = fridge->GetAllItems();
     vector<FridgeItem*> contents = fridge->GetContents();
     vector<ItemInfo*> favorites = fridge->GetFavorites();
 
-//    climateControl cC;
-//    cC.climateMenu();
+
 
     //Menu loop for user to navigate the app
     while (menuChoice != 7)
     {
         //Displaying menu and asking user what they would like to do
         menuChoice = getInt(1, 7, menuString);
+
+        system("CLS");
+        cout << "\n" << flush;
 
 
         //Case statement based on user's menu choice
@@ -164,3 +232,68 @@ int main()
     return 0;
 } //End Main
 
+
+
+
+
+
+
+
+
+long int findAccountNumber(string userName, string userEmail, string userPassword)
+{
+    //Opening accounts file that contains all user information
+    ifstream existingAccountFile("accounts.csv");
+
+    if (!existingAccountFile.is_open())	// Check if file exists
+    {
+        //if accounts.csv file doesn't exist, then user account can't exist
+        return -1;
+    }
+    else
+    {
+        //Creating variables for searching file
+        string nextAccountLine;
+        long int accountNumber;
+        string newUserName;
+        string newUserEmail;
+        string newUserPassword;
+        string nextString;
+        vector<string> row;
+
+        //Searching account.csv file for a matching account
+        while (!existingAccountFile.eof())
+        {
+            row.clear();
+
+            //Getting each line of csv and adding separated values to vector
+            getline(existingAccountFile, nextAccountLine);
+            istringstream ss(nextAccountLine);
+
+            while (getline(ss, nextString, ','))
+            {
+                row.push_back(nextString);
+            }
+
+            //Storing account information to variables
+            accountNumber = stoi(row[0]);
+            newUserEmail = row[1];
+            newUserName = row[2];
+            newUserPassword = row[3];
+
+            //Account was found
+            if (newUserName == userName && newUserEmail == userEmail && newUserPassword == userPassword)
+            {
+                return accountNumber;
+            }
+            else if (newUserEmail == userEmail) //If email has been used before but entire account doesn't match
+            {
+                return 0;
+            }
+        }
+
+        //Account was not found
+        return -1;
+    }
+        
+}
