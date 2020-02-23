@@ -243,3 +243,46 @@ ItemInfo* Fridge::GetItemInfoBySku(string sku)
 		return nullptr;
 	}
 }
+
+string Fridge::stringifyContents() {
+
+	string retString = "";
+	for (FridgeItem* i : _contents)
+	{
+		ItemInfo* item = i->itemInfo;
+		retString += (item->displayName + "| " + item->fullName + "| " + item->sku + "| ");
+		retString += (GetDateString(i->dateStocked) + "| " + std::to_string(i->quantity) + "| " + std::to_string(i->quantOnOrder));
+		if (item->favorite) retString += "| Favorite";
+		retString += '\n';
+	}
+
+	return retString;
+}
+
+string Fridge::stringifyFavorites() {
+
+	string retString = "";
+	vector<ItemInfo*> favorites = GetFavorites();
+	if (favorites.empty()) {
+		retString += "No items have been favorited.\n";
+		return retString;
+	}
+
+	for (ItemInfo* item : favorites)
+	{
+		retString += ( item->displayName + "| (" + item->sku + ")| " );
+		FridgeItem* current = GetInfoBySku(item->sku);
+		if (current != nullptr && current->quantity > 0)
+		{
+			retString += std::to_string(current->quantity);
+		}
+		else
+		{
+			retString += "None";
+		}
+		retString += " in the fridge.\n";
+	}
+
+	return retString;
+
+}
