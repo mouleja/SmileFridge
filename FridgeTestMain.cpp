@@ -108,34 +108,11 @@ int main()
         {
         case 1: //Show user's SmileFridge Contents
             cout << "Printing fridge contents:" << endl << endl;
-
-            for (FridgeItem* i : contents)
-            {
-                ItemInfo* item = i->itemInfo;
-                cout << item->displayName << "| " << item->fullName << "| " << item->sku << "| ";
-				cout << GetDateString(i->dateStocked) << "| " << i->quantity << "| " << i->quantOnOrder;
-                if (item->favorite) cout << "| Favorite";
-                cout << endl;
-            }
-
+			cout << fridge->stringifyContents();
             break;
         case 2: //Show user's favorites
             cout << endl << "Printing fridge favorites:" << endl << endl;
-
-            for (ItemInfo* item : favorites)
-            {
-                cout << item->displayName << "| (" << item->sku << ")| ";
-                FridgeItem* current = fridge->GetInfoBySku(item->sku);
-                if (current != nullptr && current->quantity > 0)
-                {
-                    cout << current->quantity;
-                }
-                else
-                {
-                    cout << "None";
-                }
-                cout << " in the fridge." << endl << endl;
-            }
+			cout << fridge->stringifyFavorites();
             break;
         case 3: //Add New Item to user's SmileFridge
 

@@ -54,4 +54,6 @@ public:
 	void SubmitOrder();
 	void ReceiveOrder(string orderJson);
 	ItemInfo* GetItemInfoBySku(string sku);
+	string stringifyContents();
+	string stringifyFavorites();
 };
