@@ -59,6 +59,7 @@ int main()
                         "6. View SmileFridge Climate control\n"
                         "7. Update Order List and view\n"
                         "8. Receive a shipped order\n"
+                        "9. Edit item information\n"
                         "0. Quit the SmileFridge app\n\n"
                         "Please enter your choice:";
     //Initialize climate object to access climate objects.
@@ -100,7 +101,7 @@ int main()
     while (menuChoice != 0)
     {
         //Displaying menu and asking user what they would like to do
-        menuChoice = getInt(0, 8, menuString);
+        menuChoice = getInt(0, 9, menuString);
 
 
         //Case statement based on user's menu choice
@@ -139,6 +140,9 @@ int main()
             orderJson = getString("Enter order filename: ");
             fridge->ReceiveOrder(orderJson);
 			contents = fridge->GetContents(); //update vector associated with fridge contents
+            break;
+        case 9:
+            fridge->EditItemMenu();
             break;
         case 0: //Quit the SmileFridge app
             cout << "\nThanks for using the SmileFridge app! Goodbye." << endl;

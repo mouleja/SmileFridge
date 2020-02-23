@@ -83,4 +83,6 @@ string getNonEmptyNoSpacesString(string prompt, string error);
 /// Description: validates that string has no spaces
 bool doesStringHaveSpaces(string input);
 
+/// Description: Prints a number (default: 40) of empty lines
+void printEmptyLines(int lines = 40);
 #endif

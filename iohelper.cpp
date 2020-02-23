@@ -359,6 +359,12 @@ bool doesStringHaveSpaces(string input)
 	return stringHasSpaces;
 }
 
+// Prints a number (default: 40) of empty lines to console
+void printEmptyLines(int lines)
+{
+	for (int i = 0; i < lines; ++i) printString();
+}
+
 
 string getNonEmptyString(string prompt, string error)
 {

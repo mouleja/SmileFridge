@@ -5,6 +5,9 @@
 
 #include "Fridge.hpp"
 #include "Supplier.hpp"
+#include "iohelper.hpp"
+
+#define PERPAGE 3
 
 
 // 	FridgeItem(string displayName, string fullName, string sku, int minQuantity,
@@ -232,6 +235,7 @@ void Fridge::ReceiveOrder(string orderJson)
 	updateInventory();
 }
 
+// Takes sku string and returns ItemInfo pointer (or nullptr if sku not in items map)
 ItemInfo* Fridge::GetItemInfoBySku(string sku)
 {
 	if (_items.find(sku) != _items.end())
@@ -286,3 +290,139 @@ string Fridge::stringifyFavorites() {
 	return retString;
 
 }
+
+// Presents a list of all items (PERPAGE at a time) to select for editing
+void Fridge::EditItemMenu()
+{
+	int page = 0;	// Page number, items listed in 'pages' of ten items
+	bool done = false, changes = false;
+
+	// Too messy to iterate through map in chunks, using vector of skus instead
+	vector<string> skus;
+	// ref: https://stackoverflow.com/questions/110157/
+	for (auto const& item : _items) skus.push_back(item.first);
+
+	int maxPages = (int)skus.size() / PERPAGE + ((int)skus.size() % PERPAGE > 0 ? 1 : 0);
+
+	while (!done)
+	{
+		printEmptyLines();
+		printString("** Edit Item Information **\n\n"
+					"Choose an item to edit:\n\n"
+					"0  - Return to Main Menu\n"
+					"1  - Move Forward One Page\n"
+					"2  - Move Backward One Page\n"
+		);
+		for (int i = 3; i < PERPAGE + 3; ++i)
+		{
+			int index = (page * PERPAGE) + i - 3;
+			if (index >= (int)skus.size()) break;
+
+			ItemInfo* current = GetItemInfoBySku(skus[index]);
+			if (current == nullptr) perror("Invalid sku in EditItemMenu");
+			else 
+			{
+				std::cout << i << (i < 10 ? " " : "") << " - " << current->sku << " : " << current->displayName 
+					<< std::endl;
+			}
+		}
+		int choice = getInt(0, PERPAGE + 2, "\nEnter Choice: ");
+
+		switch (choice)
+		{
+		case 0:
+			done = true;
+			break;
+		case 1:
+			++page;
+			if (page >= maxPages) page = maxPages - 1;
+			break;
+		case 2:
+			--page;
+			if (page < 0) page = 0;
+			break;
+		default:
+			int index = (page * PERPAGE) + choice - 3;
+			if (!changes) changes = EditItemInfo(skus[index]);
+			else EditItemInfo(skus[index]);	// Once changes is true, don't make it false later
+			break;
+		}
+	}
+	if (changes) SaveItemsToFile();	// Only rewrite file if an item was actually changed
+}
+
+// From EditItemMenu - Edit selected item values (return true if any changes made)
+bool Fridge::EditItemInfo(string sku)
+{
+	bool done = false, changes = false;
+	char yesNo[2] = { 'y', 'n' };
+	char isFav;
+
+	ItemInfo* item = GetItemInfoBySku(sku);
+	if (item == nullptr) perror("Invalid sku in EditItemInfo");
+
+	while (!done)
+	{
+		printEmptyLines();
+		printString("** Edit Item Information **\n\n"
+			"Choose information to edit:\n\n"
+			"0 - Done - Return to Items List\n"
+			"1 - Display (short) name [" + item->displayName + "] :\n"
+			"2 - Amazon description [" + item->fullName + "] :\n"
+			"3 - Minimum amount to have on hand (0 to not auto-order) [" + std::to_string(item->minQuantity) + "] :\n"
+			"4 - Order quantity (number of items in each box) [" + std::to_string(item->orderQuantity) + "] :\n"
+			"5 - Mark item as favorite? [" + (item->favorite ? "Yes" : "No") + "] :\n"
+		);
+		int choice = getInt(0, 5, "\nEnter choice:");
+		switch (choice)
+		{
+		case 0:
+			done = true;
+			break;
+		case 1:
+			item->displayName = getString("Enter new display name:");
+			changes = true;
+			break;
+		case 2:
+			item->fullName = getString("Enter new description:");
+			changes = true;
+			break;
+		case 3:
+			item->minQuantity = getInt(0, 9999, "Enter new minimum amount:");
+			changes = true;
+			break;
+		case 4:
+			item->orderQuantity = getInt(1, 9999, "Enter new order quantity:");
+			changes = true;
+			break;
+		case 5:
+			isFav = getChar("Mark item as favorite? (y/n):", yesNo, 2);
+			item->favorite = (isFav == 'y');
+			changes = true;
+			break;
+		default:
+			break;
+		}
+	}
+	return changes;
+}
+
+// Replace items file with current values
+void Fridge::SaveItemsToFile()
+{
+	// NOTE: this can't be done in Items because Items reads values from file in constructor
+	// which would overwrite the new values we just updated
+	std::ofstream outfile(ITEMSFILE, std::ios::trunc);
+
+	for (auto const& item : _items)
+	{
+		outfile << item.second->displayName << ',' 
+			<< item.second->fullName << ',' 
+			<< item.second->sku << ',' 
+			<< item.second->minQuantity << ',' 
+			<< item.second->orderQuantity << ',' 
+			<< (item.second->favorite ? "true" : "false") << std::endl;
+	}
+	outfile.close();
+}
+

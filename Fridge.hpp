@@ -56,4 +56,7 @@ public:
 	ItemInfo* GetItemInfoBySku(string sku);
 	string stringifyContents();
 	string stringifyFavorites();
+	void EditItemMenu();
+	bool EditItemInfo(string sku);
+	void SaveItemsToFile();
 };
