@@ -11,6 +11,8 @@ using std::vector;
 #define ORDERLOG "order_log.csv"
 #define RECVLOG "received_log.csv"
 
+
+
 struct FridgeItem
 {
 	ItemInfo *itemInfo;
@@ -38,7 +40,6 @@ private:
 
 public:
 	Fridge(User* user);
-
 	User* GetUser() { return _user; }
 	vector<FridgeItem*> GetContents() { return _contents; }
 	map<string, ItemInfo*> GetAllItems() { return _items; }

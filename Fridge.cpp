@@ -2,13 +2,13 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 #include "Fridge.hpp"
 #include "Supplier.hpp"
 #include "iohelper.hpp"
 
 #define PERPAGE 3
-
 
 // 	FridgeItem(string displayName, string fullName, string sku, int minQuantity,
 //  bool favorite, int quantity, int dateYear, int dateDay, int goodFor) :
@@ -291,6 +291,7 @@ string Fridge::stringifyFavorites() {
 
 }
 
+
 // Presents a list of all items (PERPAGE at a time) to select for editing
 void Fridge::EditItemMenu()
 {
@@ -301,6 +302,11 @@ void Fridge::EditItemMenu()
 	vector<string> skus;
 	// ref: https://stackoverflow.com/questions/110157/
 	for (auto const& item : _items) skus.push_back(item.first);
+
+	//sort the vector so that items are appear alphabetically according to their display name
+	std::sort(skus.begin(), skus.end(), [&](const string i, const string j) { 
+		return GetItemInfoBySku(i)->displayName < GetItemInfoBySku(j)->displayName; 
+	});
 
 	int maxPages = (int)skus.size() / PERPAGE + ((int)skus.size() % PERPAGE > 0 ? 1 : 0);
 
