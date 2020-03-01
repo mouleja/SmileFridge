@@ -83,7 +83,7 @@ int main()
     /***Next section should probably be moved to User class...***/
 
     //Asking user to log in or create account
-    if (accountChoice == 1)
+    if (accountChoice == 1) //Login
     {
         while (!foundAccount)
         {
@@ -106,7 +106,7 @@ int main()
             }
         }
     }
-    else
+    else //Create account
     {
         foundAccount = true;
         while (foundAccount)
@@ -237,9 +237,14 @@ int main()
 
 
 
-
-
-
+//*****************************************************************************************
+//***findAccountNumber method***														***
+//***This method attempts to find a user account by searching each line of the accounts ***
+//***csv file for the user entered credentials. If the credentials match a line in the  ***
+//***csv file, then the account number is returned. If the email entered matches an     ***
+//***email in one of the rows but not everything else matches, a 0 is returned. Fianlly,***
+//***if no account is matched by the user entered credentials, a -1 is returned.
+//*****************************************************************************************
 long int findAccountNumber(string userName, string userEmail, string userPassword)
 {
     //Opening accounts file that contains all user information

@@ -1,15 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <string>
+
 using std::vector;
+using std::to_string;
 
 #include "Items.hpp"
 #include "User.hpp"
-
-#define USERNAME "Joseph Blow"
-#define EMAIL "joeb@low.com"
-#define ACCTNO "AFE87WE34FES"
-#define INVFILE "inventory_list.csv"
 
 struct FridgeItem
 {
@@ -38,7 +36,7 @@ public:
 		_user = user;
 
 		_items = Items().GetAll();
-		getInventoryFromCsv(INVFILE);
+		getInventoryFromCsv(to_string(_user->GetAccount()) + ".csv");
 	} 
 
 	User* GetUser() { return _user; }
