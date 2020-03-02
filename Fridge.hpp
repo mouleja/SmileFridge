@@ -1,7 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <string>
+
 using std::vector;
+using std::to_string;
 
 #include "Items.hpp"
 #include "User.hpp"
@@ -45,6 +48,9 @@ public:
 	map<string, ItemInfo*> GetAllItems() { return _items; }
 	bool isFavorite(string sku) { return _items.at(sku)->favorite; }
 	void Use(string sku, int amount = 1);
+	void ViewQuantity(string sku);
+	void Update(string sku, int amount);
+	void UpdateQuantityInCSV(string sku, int amount);
 	int GetIndexBySku(string sku);
 	FridgeItem* GetInfoBySku(string sku);
 	vector<ItemInfo*> GetFavorites();
@@ -60,4 +66,8 @@ public:
 	void EditItemMenu();
 	bool EditItemInfo(string sku);
 	void SaveItemsToFile();
+};
+	void AddItem(string sku, int quantity);
+	void ListContents();
+	void LowStockCallback();
 };
