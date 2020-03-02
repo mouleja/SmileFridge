@@ -44,6 +44,8 @@ public:
 	map<string, ItemInfo*> GetAllItems() { return _items; }
 	bool isFavorite(string sku) { return _items.at(sku)->favorite; }
 	void Use(string sku, int amount = 1);
+	void Update(string sku, int amount);
+	void UpdateQuantityInCSV(string sku, int amount);
 	int GetIndexBySku(string sku);
 	FridgeItem* GetInfoBySku(string sku);
 	vector<ItemInfo*> GetFavorites();

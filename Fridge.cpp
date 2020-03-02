@@ -5,6 +5,11 @@
 
 #include "Fridge.hpp"
 
+using std::cout;
+using std::endl;
+using std::fstream;
+using std::istringstream;
+
 // 	FridgeItem(string displayName, string fullName, string sku, int minQuantity,
 //  bool favorite, int quantity, int dateYear, int dateDay, int goodFor) :
 
@@ -40,9 +45,7 @@ void Fridge::getInventoryFromCsv(string filename)
 
 		ItemInfo *item = _items.at(sku);	// This will throw an error if sku not in _items!!
 
-		_contents.push_back(
-			new FridgeItem(item, quant, dy, dd, gf)
-		);
+		_contents.push_back(new FridgeItem(item, quant, dy, dd, gf));
 	}
 
 	inFile.close();
@@ -59,8 +62,104 @@ void Fridge::Use(string sku, int amount)
 		{
 			int index = GetIndexBySku(sku);
 			_contents.erase(_contents.begin() + index);
+			cout << "You have run out of that item" << endl;
+		}
+		else
+		{
+			cout << "You have " << item->quantity << " of that item left" << endl;
 		}
 	}
+	else
+	{
+		cout << "That item does not exist in your Fridge" << endl;
+	}
+}
+
+// Remove some amount(default = 1) from item by sku.  Removes item from contents if quantity < 0.
+void Fridge::Update(string sku, int amount)
+{
+	FridgeItem* item = GetInfoBySku(sku);
+	if (item)
+	{
+		item->quantity = amount;
+		if (item->quantity < 1)
+		{
+			int index = GetIndexBySku(sku);
+			_contents.erase(_contents.begin() + index);
+			cout << "You have run out of that item" << endl;
+			UpdateQuantityInCSV(sku, 0);
+		}
+		else
+		{
+			cout << "You have " << item->quantity << " of that item left" << endl;
+			UpdateQuantityInCSV(sku, item->quantity);
+		}
+	}
+	else
+	{
+		cout << "That item does not exist in your Fridge" << endl;
+	}
+}
+
+void Fridge::UpdateQuantityInCSV(string sku, int amount)
+{
+	//Opening accounts file that contains all user information
+	fstream fridgeFile(to_string(_user->GetAccount()) + ".csv");
+
+	fstream newFridgeFile("temp.csv");
+
+	if (!fridgeFile.is_open())	// Check if file exists
+	{
+		//if user account file file doesn't exist, then we can't update anything
+		return;
+	}
+	else
+	{
+		//Creating variables for searching file
+		string nextItemLine;
+		string SKU;
+		string quantity;
+		string year;
+		string day;
+		string goodFor;
+		string nextString;
+		vector<string> row;
+
+		//Searching account specific file for a matching SKU
+		while (!fridgeFile.eof())
+		{
+			row.clear();
+
+			//Getting each line of csv and adding separated values to vector
+			getline(fridgeFile, nextItemLine);
+			istringstream ss(nextItemLine);
+
+			while (getline(ss, nextString, ','))
+			{
+				row.push_back(nextString);
+			}
+
+			//Storing item information to variables
+			SKU = row[0];
+			quantity = row[1];
+			year = row[2];
+			day = row[3];
+			goodFor = row[4];
+
+			if (SKU == sku)
+			{
+				quantity = to_string(amount);
+			}
+
+			newFridgeFile << SKU << "," << quantity << "," << year << "," << day << "," << goodFor << "\n";
+			
+		}
+	}
+
+	newFridgeFile.close();
+	fridgeFile.close();
+	//remove(_user->GetAccount() + ".csv");
+	//int value = rename("temp.csv", _user->GetAccount() + ".csv");
 }
 
 int Fridge::GetIndexBySku(string sku)

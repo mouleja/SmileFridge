@@ -35,6 +35,8 @@ int main()
 
     int menuChoice = 0;
     int accountChoice;
+    int updateAmount;
+    string updateSku;
     string welcomeMessage = "Welcome to the SmileFridge app!!!\n\n";
     string accountString = "You must log in or create a new account to proceed\n"
                             "1. Log into existing account\n"
@@ -49,6 +51,9 @@ int main()
                         "6. View SmileFridge Climate control\n"
                         "7. Quit the SmileFridge app\n\n"
                         "Please enter your choice:";
+    string enterSkuString = "Please enter the sku for which you would like to update the quantity of:";
+    string skuError = "You cannot enter a SKU that is blank or has spaces. Please try again";
+    string updateAmountString = "Please enter the new amount of your item in the fridge:";
 
     //Initialize climate object to access climate objects.
     climateControl* cC;
@@ -86,13 +91,16 @@ int main()
         {
         case 1: //Show user's SmileFridge Contents
             cout << "Printing fridge contents:" << endl << endl;
+            cout << "**********************************************************************************" << endl;
+            cout << "|Item Name|Item SKU  |Fresh Until (day)|(year)|Quantity|Good For (days)|Favorite?|" << endl;
+            cout << "**********************************************************************************" << endl;
 
             for (FridgeItem* i : contents)
             {
                 ItemInfo* item = i->itemInfo;
-                cout << item->displayName << "| " << item->fullName << "| " << item->sku << "| ";
-                cout << i->dateDay << ", " << i->dateYear << "| " << i->quantity << "| " << i->goodFor;
-                if (item->favorite) cout << "| Favorite";
+                cout << "|" << left << setw(9) << item->displayName << "|" << left << setw(10) << item->sku << "|";
+                cout << left << setw(17) << i->dateDay << "|" << left << setw(6) << i->dateYear << "|" << left << setw(8) << i->quantity << "|" << left << setw(15) << i->goodFor;
+                if (item->favorite) cout << "|Favorite";
                 cout << endl;
             }
 
@@ -122,7 +130,10 @@ int main()
 
             break;
         case 5: //Update Quantity of an existing item
-
+          
+            updateSku = getNonEmptyNoSpacesString(enterSkuString, skuError);
+            updateAmount = getInt(0, 100, updateAmountString);
+            fridge->Update(updateSku, updateAmount);
             break;
         case 6: //get Climate control info.
 
