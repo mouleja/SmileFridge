@@ -37,6 +37,7 @@ int main()
     int accountChoice;
     int updateAmount;
     string updateSku;
+    string viewSku;
     string welcomeMessage = "Welcome to the SmileFridge app!!!\n\n";
     string accountString = "You must log in or create a new account to proceed\n"
                             "1. Log into existing account\n"
@@ -45,13 +46,15 @@ int main()
     string menuString = "\n\nWhat would you like to do?\n"
                         "1. Show SmileFridge contents\n"
                         "2. Show My Favorites\n"
-                        "3. Add New Item to my SmileFridge\n"
-                        "4. Remove Item from my SmileFridge\n"
-                        "5. Update Quantity of an existing item\n"
-                        "6. View SmileFridge Climate control\n"
-                        "7. Quit the SmileFridge app\n\n"
+                        "3. View Quantity of Single Item\n"
+                        "4. Add New Item to my SmileFridge\n"
+                        "5. Remove Item from my SmileFridge\n"
+                        "6. Update Quantity of an existing item\n"
+                        "7. View SmileFridge Climate control\n"
+                        "8. Quit the SmileFridge app\n\n"
                         "Please enter your choice:";
     string enterSkuString = "Please enter the sku for which you would like to update the quantity of:";
+    string viewSkuString = "Please enter the sku for which you would like to see the quantity of:";
     string skuError = "You cannot enter a SKU that is blank or has spaces. Please try again";
     string updateAmountString = "Please enter the new amount of your item in the fridge:";
 
@@ -77,10 +80,10 @@ int main()
 
 
     //Menu loop for user to navigate the app
-    while (menuChoice != 7)
+    while (menuChoice != 8)
     {
         //Displaying menu and asking user what they would like to do
-        menuChoice = getInt(1, 7, menuString);
+        menuChoice = getInt(1, 8, menuString);
 
         system("CLS");
         cout << "\n" << flush;
@@ -123,24 +126,27 @@ int main()
                 cout << " in the fridge." << endl << endl;
             }
             break;
-        case 3: //Add New Item to user's SmileFridge
+        case 3: //View Quantity of item in SmileFridge
+            viewSku = getNonEmptyNoSpacesString(viewSkuString, skuError);
+            fridge->ViewQuantity(viewSku);
+            break;
+        case 4: //Add New Item to user's SmileFridge
 
             break;
-        case 4: //Remove Item from user's SmileFridge
+        case 5: //Remove Item from user's SmileFridge
 
             break;
-        case 5: //Update Quantity of an existing item
-          
+        case 6: //Update Quantity of an existing item
             updateSku = getNonEmptyNoSpacesString(enterSkuString, skuError);
             updateAmount = getInt(0, 100, updateAmountString);
             fridge->Update(updateSku, updateAmount);
             break;
-        case 6: //get Climate control info.
+        case 7: //get Climate control info.
 
             cC->climateMenu();
 
             break;
-        case 7: //Quit the SmileFridge app
+        case 8: //Quit the SmileFridge app
             cout << "\nThanks for using the SmileFridge app! Goodbye.";
         }
     }

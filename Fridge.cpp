@@ -66,8 +66,21 @@ void Fridge::Use(string sku, int amount)
 		}
 		else
 		{
-			cout << "You have " << item->quantity << " of that item left" << endl;
+			cout << "You have " << item->quantity << " of " << item->itemInfo->displayName << "(s) left in your fridge" << endl;
 		}
+	}
+	else
+	{
+		cout << "That item does not exist in your Fridge" << endl;
+	}
+}
+
+void Fridge::ViewQuantity(string sku)
+{
+	FridgeItem* item = GetInfoBySku(sku);
+	if (item)
+	{
+		cout << "You have " << item->quantity << " of " << item->itemInfo->displayName << "(s) left in your fridge" << endl;
 	}
 	else
 	{
@@ -91,7 +104,7 @@ void Fridge::Update(string sku, int amount)
 		}
 		else
 		{
-			cout << "You have " << item->quantity << " of that item left" << endl;
+			cout << "You have " << item->quantity << " of " << item->itemInfo->displayName << "(s) left in your fridge" << endl;
 			UpdateQuantityInCSV(sku, item->quantity);
 		}
 	}
