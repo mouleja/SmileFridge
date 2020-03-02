@@ -16,9 +16,10 @@ struct FridgeItem
 	int dateYear;
 	int dateDay;
 	int goodFor;
+	int lowWarning;
 
 	FridgeItem(ItemInfo *itemInfo, int quantity, int dateYear, int dateDay, int goodFor) :
-		itemInfo(itemInfo), quantity(quantity), dateYear(dateYear), dateDay(dateDay), goodFor(goodFor) 
+		itemInfo(itemInfo), quantity(quantity), dateYear(dateYear), dateDay(dateDay), goodFor(goodFor)
 	{ }
 };
 
@@ -37,7 +38,7 @@ public:
 
 		_items = Items().GetAll();
 		getInventoryFromCsv(to_string(_user->GetAccount()) + ".csv");
-	} 
+	}
 
 	User* GetUser() { return _user; }
 	vector<FridgeItem*> GetContents() { return _contents; }
@@ -51,4 +52,6 @@ public:
 	FridgeItem* GetInfoBySku(string sku);
 	vector<ItemInfo*> GetFavorites();
 	void AddItem(string sku, int quantity);
+	void ListContents();
+	void LowStockCallback();
 };

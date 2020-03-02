@@ -165,7 +165,7 @@ void Fridge::UpdateQuantityInCSV(string sku, int amount)
 			}
 
 			newFridgeFile << SKU << "," << quantity << "," << year << "," << day << "," << goodFor << "\n";
-			
+
 		}
 	}
 
@@ -227,4 +227,28 @@ void Fridge::AddItem(string sku, int quantity) {
 		this->_contents.push_back(new FridgeItem(new_item, quantity, 1, 1, 30));
 	}
 	this->_contents[place]->quantity += quantity;
+}
+
+//Function to list all current fridge contents.
+void Fridge::ListContents(){
+	cout << "Current fridge inventory:" << endl;
+	cout << "Item 					Amount" << endl;
+	for(int i = 0; i < this->_contents.size; i++){
+		FridgeItem* item = this->_contents[i];
+		cout << item->itemInfo->displayName << ": " << item->quantity << endl;
+	}
+}
+
+void Fridge::LowStockCallback(){
+	int lowCount = 0;
+	for(int i = 0; i < this->_contents.size; i++){
+		FridgeItem* item = this->_contents[i];
+		if(item->quantity < item->lowWarning){
+			if(lowCount == 0){
+				cout << "Warning: You are running low on the following items: " << endl;
+			}
+			lowCount++;
+			cout << item->displayName << ". Only " << item->quantity << " Remaining!" << endl;
+		}
+	}
 }
