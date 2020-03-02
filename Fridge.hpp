@@ -66,8 +66,6 @@ public:
 	void EditItemMenu();
 	bool EditItemInfo(string sku);
 	void SaveItemsToFile();
-};
-	void AddItem(string sku, int quantity);
 	void ListContents();
 	void LowStockCallback();
 };

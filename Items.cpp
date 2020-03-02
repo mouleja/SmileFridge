@@ -97,6 +97,8 @@ ItemInfo* Items::CreateNewItem(string sku)
 	string shortName, fullName;
 	int minQ, orderQ, favChar;
 
+	std::cin.ignore(1024, '\n');	// Clear input buffer
+
 	std::cout << std::endl << "Item with Sku # " << sku
 		<< " not in database.  Please enter the item information:" << std::endl;
 	shortName = getString("Display (short) name of item: ");

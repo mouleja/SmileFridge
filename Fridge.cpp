@@ -8,15 +8,12 @@
 #include "Supplier.hpp"
 #include "iohelper.hpp"
 
-#define PERPAGE 3
+#define PERPAGE 10	// Number of records to show per page when editing
 
 using std::cout;
 using std::endl;
 using std::fstream;
 using std::istringstream;
-
-// 	FridgeItem(string displayName, string fullName, string sku, int minQuantity,
-//  bool favorite, int quantity, int dateYear, int dateDay, int goodFor) :
 
 Fridge::Fridge(User* user)
 {
@@ -116,13 +113,14 @@ void Fridge::Update(string sku, int amount)
 			int index = GetIndexBySku(sku);
 			_contents.erase(_contents.begin() + index);
 			cout << "You have run out of that item" << endl;
-			UpdateQuantityInCSV(sku, 0);
+			//UpdateQuantityInCSV(sku, 0);
 		}
 		else
 		{
 			cout << "You have " << item->quantity << " of " << item->itemInfo->displayName << "(s) left in your fridge" << endl;
-			UpdateQuantityInCSV(sku, item->quantity);
+			//UpdateQuantityInCSV(sku, item->quantity);
 		}
+		updateInventory();
 	}
 	else
 	{
@@ -187,8 +185,6 @@ void Fridge::UpdateQuantityInCSV(string sku, int amount)
 
 	newFridgeFile.close();
 	fridgeFile.close();
-	//remove(_user->GetAccount() + ".csv");
-	//int value = rename("temp.csv", _user->GetAccount() + ".csv");
 }
 
 int Fridge::GetIndexBySku(string sku)
@@ -245,11 +241,13 @@ void Fridge::AddItem(string sku, int quantity, int quantOnOrder) {
 			new_item = Items().CreateNewItem(sku);
 		}
 		this->_contents.push_back(new FridgeItem(new_item, quantity, quantOnOrder, GetCurrentDate()));
+		_items[sku] = new_item;
 	}
 	else
 	{
 		this->_contents[place]->quantity += quantity;
 	}
+	updateInventory();
 }
 
 
@@ -546,17 +544,11 @@ void Fridge::SaveItemsToFile()
 	outfile.close();
 }
 
-		ItemInfo* new_item = new ItemInfo(sku);
-		this->_contents.push_back(new FridgeItem(new_item, quantity, 1, 1, 30));
-	}
-	this->_contents[place]->quantity += quantity;
-}
-
 //Function to list all current fridge contents.
 void Fridge::ListContents(){
 	cout << "Current fridge inventory:" << endl;
 	cout << "Item 					Amount" << endl;
-	for(int i = 0; i < this->_contents.size; i++){
+	for(unsigned int i = 0; i < this->_contents.size(); i++){
 		FridgeItem* item = this->_contents[i];
 		cout << item->itemInfo->displayName << ": " << item->quantity << endl;
 	}
@@ -564,14 +556,14 @@ void Fridge::ListContents(){
 
 void Fridge::LowStockCallback(){
 	int lowCount = 0;
-	for(int i = 0; i < this->_contents.size; i++){
+	for(unsigned int i = 0; i < this->_contents.size(); i++){
 		FridgeItem* item = this->_contents[i];
-		if(item->quantity < item->lowWarning){
+		if(item->quantity < item->itemInfo->minQuantity){
 			if(lowCount == 0){
 				cout << "Warning: You are running low on the following items: " << endl;
 			}
 			lowCount++;
-			cout << item->displayName << ". Only " << item->quantity << " Remaining!" << endl;
+			cout << item->itemInfo->displayName << ". Only " << item->quantity << " Remaining!" << endl;
 		}
 	}
 }

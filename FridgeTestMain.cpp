@@ -50,25 +50,22 @@ int main()
     string menuString = "\n\nWhat would you like to do?\n"
                         "1. Show SmileFridge contents\n"
                         "2. Show My Favorites\n"
-                        "3. Add New Item to my SmileFridge\n"
-                        "4. Remove Item from my SmileFridge\n"
-                        "5. Update Quantity of an existing item\n"
-                        "6. View SmileFridge Climate control\n"
-                        "7. Update Order List and view\n"
-                        "8. Receive a shipped order\n"
-                        "9. Edit item information\n"
-                        "0. Quit the SmileFridge app\n\n"
                         "3. View Quantity of Single Item\n"
                         "4. Add New Item to my SmileFridge\n"
                         "5. Remove Item from my SmileFridge\n"
                         "6. Update Quantity of an existing item\n"
                         "7. View SmileFridge Climate control\n"
-                        "8. Quit the SmileFridge app\n\n"
+                        "8. Update Order List and view\n"
+                        "9. Receive a shipped order\n"
+                        "10. Edit item information\n"
+                        "0. Quit the SmileFridge app\n\n"
                         "Please enter your choice:";
     string enterSkuString = "Please enter the sku for which you would like to update the quantity of:";
     string viewSkuString = "Please enter the sku for which you would like to see the quantity of:";
     string skuError = "You cannot enter a SKU that is blank or has spaces. Please try again";
     string updateAmountString = "Please enter the new amount of your item in the fridge:";
+    string newSKU;
+    int quantity;
 
     //Initialize climate object to access climate objects.
     climateControl* cC;
@@ -95,7 +92,7 @@ int main()
     while (menuChoice != 0)
     {
         //Displaying menu and asking user what they would like to do
-        menuChoice = getInt(0, 9, menuString);
+        menuChoice = getInt(0, 10, menuString);
 
 
         //Case statement based on user's menu choice
@@ -114,10 +111,19 @@ int main()
             fridge->ViewQuantity(viewSku);
             break;
         case 4: //Add New Item to user's SmileFridge
+            cout << endl << "You've chosen to enter a new item. Please enter the required information" << endl << endl;
 
+            cout << "Item SKU: " << endl;
+            cin >> newSKU;
+
+            cout << "Quantity: " << endl;
+            cin >> quantity;
+
+            fridge->AddItem(newSKU, quantity);
             break;
         case 5: //Remove Item from user's SmileFridge
-
+            updateSku = getNonEmptyNoSpacesString(enterSkuString, skuError);
+            fridge->Update(updateSku, 0);
             break;
         case 6: //Update Quantity of an existing item
             updateSku = getNonEmptyNoSpacesString(enterSkuString, skuError);
@@ -129,19 +135,19 @@ int main()
             cC->climateMenu();
 
             break;
-        case 7: //Update orderList and print contents
+        case 8: //Update orderList and print contents
             fridge->orderLowItems();
             fridge->printOrderList();
             fridge->SubmitOrder();
 			contents = fridge->GetContents(); //update vector associated with fridge contents
             break;
-        case 8:
+        case 9:
             printString();
             orderJson = getString("Enter order filename: ");
             fridge->ReceiveOrder(orderJson);
 			contents = fridge->GetContents(); //update vector associated with fridge contents
             break;
-        case 9:
+        case 10:
             fridge->EditItemMenu();
             break;
         case 0: //Quit the SmileFridge app
@@ -149,7 +155,7 @@ int main()
             break;
         default: 
             cout << "Invalid choice!  Try again." << endl << endl;
-            menuChoice = getInt(0, 7, menuString);
+            menuChoice = getInt(0, 10, menuString);
         }
     }
 
